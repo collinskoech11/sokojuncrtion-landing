@@ -19,12 +19,12 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { name: "Features", href: "#features" },
-    { name: "Product Tour", href: "#showcase" },
-    { name: "Pricing", href: "#pricing" },
-    { name: "Testimonials", href: "#testimonials" },
-    { name: "FAQ", href: "#faq" },
-    { name: "Contact", href: "#contact" },
+    { name: "Features", href: "/#features" },
+    { name: "Product Tour", href: "/#showcase" },
+    { name: "Pricing", href: "/#pricing" },
+    { name: "About", href: "/about" },
+    { name: "Mobile App", href: "/mobile-app" },
+    { name: "Contact", href: "/#contact" },
   ];
 
   return (
@@ -39,13 +39,13 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-sm border border-gray-100 transition-transform group-hover:scale-105">
+            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-white transition-transform group-hover:scale-105 flex items-center justify-center">
               <Image
                 src="/sokojunction_no_bg_mini.jpeg"
                 alt="SokoJunction Logo"
                 fill
-                className="object-cover"
-                sizes="40px"
+                className="object-contain p-0.5"
+                sizes="(max-width: 640px) 40px, 44px"
                 priority
               />
             </div>

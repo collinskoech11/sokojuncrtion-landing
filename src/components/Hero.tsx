@@ -10,6 +10,16 @@ export interface PlatformStats {
   total_volume: number;
 }
 
+interface ShootingStarItem {
+  id: number;
+  direction: "right" | "left" | "down" | "up";
+  top?: string;
+  left?: string;
+  duration: string;
+  color: string;
+  size: number;
+}
+
 interface AnimatedCounterProps {
   endValue: number;
   duration?: number;
@@ -73,15 +83,22 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
     return () => clearInterval(timer);
   }, [words.length]);
 
+  const [isMounted, setIsMounted] = useState(false);
+  const [activeStars, setActiveStars] = useState<ShootingStarItem[]>([]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Fetch live stats from backend
   useEffect(() => {
-    let isMounted = true;
+    let mounted = true;
     async function fetchStats() {
       try {
         const res = await fetch(`${BACKEND_URL}/companies/platform-stats/`);
         if (res.ok) {
           const data = await res.json();
-          if (isMounted && data) {
+          if (mounted && data) {
             setStats({
               total_merchants: Number(data.total_merchants) || 0,
               total_orders: Number(data.total_orders) || 0,
@@ -95,9 +112,89 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
     }
     fetchStats();
     return () => {
-      isMounted = false;
+      mounted = false;
     };
   }, []);
+
+  // Randomized non-repetitive shooting star spawner running along grid tracks
+  useEffect(() => {
+    if (!isMounted) return;
+
+    let starIdCounter = 0;
+    let isCancelled = false;
+    let spawnTimer: NodeJS.Timeout;
+
+    const HORIZONTAL_TRACKS = [12, 20, 28, 36, 44, 52, 60, 68, 76, 84, 92];
+    const VERTICAL_TRACKS = [15, 25, 35, 45, 55, 65, 75, 85, 92];
+    const COLORS = ["#35408F", "#EF5C2A"];
+    const DIRECTIONS: Array<"right" | "left" | "down" | "up"> = ["right", "left", "down", "up"];
+
+    let lastDirection: string = "";
+    let lastTrack: number = -1;
+    let lastColorIndex: number = -1;
+
+    const spawnStar = () => {
+      if (isCancelled) return;
+
+      const availableDirs = DIRECTIONS.filter((d) => d !== lastDirection);
+      const direction = availableDirs[Math.floor(Math.random() * availableDirs.length)] || "right";
+      lastDirection = direction;
+
+      const isHorizontal = direction === "right" || direction === "left";
+      const trackPool = isHorizontal ? HORIZONTAL_TRACKS : VERTICAL_TRACKS;
+
+      const availableTracks = trackPool.filter((t) => t !== lastTrack);
+      const chosenTrack = availableTracks[Math.floor(Math.random() * availableTracks.length)] || trackPool[0];
+      lastTrack = chosenTrack;
+
+      let topStr: string | undefined;
+      let leftStr: string | undefined;
+
+      if (direction === "right") {
+        topStr = `${chosenTrack}%`;
+        leftStr = "0%";
+      } else if (direction === "left") {
+        topStr = `${chosenTrack}%`;
+        leftStr = "100%";
+      } else if (direction === "down") {
+        topStr = "0%";
+        leftStr = `${chosenTrack}%`;
+      } else {
+        topStr = "100%";
+        leftStr = `${chosenTrack}%`;
+      }
+
+      const randomDuration = (1.7 + Math.random() * 0.5).toFixed(2);
+      const nextColorIndex = lastColorIndex === 0 ? 1 : 0;
+      lastColorIndex = nextColorIndex;
+      const chosenColor = COLORS[nextColorIndex];
+      const randomSize = Math.random() > 0.45 ? 6 : 5;
+
+      const newStar: ShootingStarItem = {
+        id: ++starIdCounter,
+        direction,
+        top: topStr,
+        left: leftStr,
+        duration: `${randomDuration}s`,
+        color: chosenColor,
+        size: randomSize,
+      };
+
+      setActiveStars((prev) => [...prev.slice(-3), newStar]);
+
+      const nextDelay = 650 + Math.floor(Math.random() * 650);
+      spawnTimer = setTimeout(spawnStar, nextDelay);
+    };
+
+    spawnStar();
+    const initTimer = setTimeout(spawnStar, 400);
+
+    return () => {
+      isCancelled = true;
+      clearTimeout(spawnTimer);
+      clearTimeout(initTimer);
+    };
+  }, [isMounted]);
 
   // Currency rule: The currency for this project is always Kes.
   const formatVolume = (val: number) => {
@@ -114,14 +211,102 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
   };
 
   return (
-    <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 bg-gradient-to-b from-white via-[#f4f6fc] to-[#f8f8f8]">
-      {/* Ambient background glow effects */}
+    <section className="relative overflow-hidden pt-12 pb-20 md:pt-20 md:pb-32 bg-[#f8f9fc]">
+      {/* 1. Grid Pattern Overlay */}
+      <div className="absolute inset-0 hero-grid pointer-events-none z-0" aria-hidden="true" />
+
+      {/* 2. Animated Ambient Blobs */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/5 rounded-full blur-3xl pointer-events-none -z-10"
+        className="absolute -top-[10%] -left-[10%] w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] rounded-full filter blur-[100px] opacity-30 hero-blob-1 pointer-events-none z-0"
+        style={{
+          background: "radial-gradient(circle, #35408F 0%, transparent 70%)",
+        }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute -bottom-[10%] -right-[10%] w-[60vw] h-[60vw] max-w-[600px] max-h-[600px] rounded-full filter blur-[100px] opacity-30 hero-blob-2 pointer-events-none z-0"
+        style={{
+          background: "radial-gradient(circle, #EF5C2A 0%, transparent 70%)",
+        }}
         aria-hidden="true"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* 3. Motion Items Animation (Shooting Stars along Grid Axes) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-[1]" aria-hidden="true">
+        {activeStars.map((star) => {
+          const isRight = star.direction === "right";
+          const isLeft = star.direction === "left";
+          const isDown = star.direction === "down";
+
+          return (
+            <div
+              key={star.id}
+              className="absolute pointer-events-none will-change-transform"
+              style={{
+                top: star.top,
+                left: star.left,
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                borderRadius: "50%",
+                backgroundColor: "#ffffff",
+                boxShadow: `0 0 6px 2px #ffffff, 0 0 16px 5px ${star.color}, 0 0 36px 10px ${star.color}b3`,
+                animation: `${isRight ? "straightRight" : isLeft ? "straightLeft" : isDown ? "straightDown" : "straightUp"} ${star.duration} linear forwards`,
+              }}
+              onAnimationEnd={() => {
+                setActiveStars((prev) => prev.filter((s) => s.id !== star.id));
+              }}
+            >
+              <span
+                className="absolute rounded-full pointer-events-none"
+                style={{
+                  filter: `drop-shadow(0 0 8px ${star.color}) drop-shadow(0 0 16px ${star.color})`,
+                  ...(isRight
+                    ? {
+                        right: "50%",
+                        top: "50%",
+                        transformOrigin: "right center",
+                        width: "90px",
+                        height: "3.5px",
+                        background: `linear-gradient(90deg, transparent, ${star.color}33 15%, ${star.color} 55%, #ffffff 100%)`,
+                        animation: `tailStretchRight ${star.duration} linear forwards`,
+                      }
+                    : isLeft
+                    ? {
+                        left: "50%",
+                        top: "50%",
+                        transformOrigin: "left center",
+                        width: "90px",
+                        height: "3.5px",
+                        background: `linear-gradient(90deg, #ffffff 0%, ${star.color} 45%, ${star.color}33 85%, transparent 100%)`,
+                        animation: `tailStretchLeft ${star.duration} linear forwards`,
+                      }
+                    : isDown
+                    ? {
+                        bottom: "50%",
+                        left: "50%",
+                        transformOrigin: "center bottom",
+                        width: "3.5px",
+                        height: "90px",
+                        background: `linear-gradient(180deg, transparent, ${star.color}33 15%, ${star.color} 55%, #ffffff 100%)`,
+                        animation: `tailStretchDown ${star.duration} linear forwards`,
+                      }
+                    : {
+                        top: "50%",
+                        left: "50%",
+                        transformOrigin: "center top",
+                        width: "3.5px",
+                        height: "90px",
+                        background: `linear-gradient(180deg, #ffffff 0%, ${star.color} 45%, ${star.color}33 85%, transparent 100%)`,
+                        animation: `tailStretchUp ${star.duration} linear forwards`,
+                      }),
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
         {/* Central Hero Card */}
         <div className="relative max-w-4xl mx-auto text-center">
           {/* Primary SEO Heading (H1) */}

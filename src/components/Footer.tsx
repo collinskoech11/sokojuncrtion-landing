@@ -68,27 +68,32 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm text-gray-300">
               <li>
-                <a href="#features" className="hover:text-white transition-colors">
+                <Link href="/about" className="hover:text-white transition-colors">
+                  About SokoJunction
+                </Link>
+              </li>
+              <li>
+                <a href="/#features" className="hover:text-white transition-colors">
                   Storefront Features
                 </a>
               </li>
               <li>
-                <a href="#showcase" className="hover:text-white transition-colors">
+                <a href="/#showcase" className="hover:text-white transition-colors">
                   Product Tour
                 </a>
               </li>
               <li>
-                <a href="#pricing" className="hover:text-white transition-colors">
+                <a href="/#pricing" className="hover:text-white transition-colors">
                   Pricing Plans (Kes)
                 </a>
               </li>
               <li>
-                <a href="#faq" className="hover:text-white transition-colors">
+                <a href="/#faq" className="hover:text-white transition-colors">
                   Frequently Asked Questions
                 </a>
               </li>
               <li>
-                <a href="#testimonials" className="hover:text-white transition-colors">
+                <a href="/#testimonials" className="hover:text-white transition-colors">
                   Client Reviews
                 </a>
               </li>
@@ -130,17 +135,15 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href={FX_LINKS.mobileApp}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/mobile-app"
                   className="hover:text-white transition-colors"
                 >
                   Manager Mobile App
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#contact" className="hover:text-white transition-colors">
+                <a href="/#contact" className="hover:text-white transition-colors">
                   Partner Inquiries
                 </a>
               </li>
