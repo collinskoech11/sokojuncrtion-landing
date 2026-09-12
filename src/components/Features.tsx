@@ -5,45 +5,45 @@ export default function Features() {
   const features = [
     {
       step: "01",
-      icon: Store,
-      title: "Instant Storefront",
+      icon: ShoppingCart,
+      title: "24/7 Automated Cashier",
       description:
-        "Launch a stunning, fully functional online store in minutes. Showcase your brand with responsive layouts optimized for mobile and desktop shoppers.",
+        "Processes customer payments via instant M-Pesa STK push and Card billing. Validates transactions, sends receipts, and reconciles balances without manual intervention.",
     },
     {
       step: "02",
-      icon: ShoppingCart,
-      title: "Seamless Checkout",
+      icon: Store,
+      title: "Always-On Digital Storefront",
       description:
-        "Convert more visitors with a friction-free checkout experience. Integrated M-Pesa, card, and global payments ensure fast, secure transactions.",
+        "A high-converting, mobile-first storefront that displays your products beautifully, guides shoppers through catalog categories, and closes orders round the clock.",
     },
     {
       step: "03",
       icon: Rocket,
-      title: "Growth Engine & SEO",
+      title: "Real-Time Inventory Guardian",
       description:
-        "Don't just sell, grow. Access powerful analytics, automated marketing tools, and search-optimized catalog pages directly from your dashboard.",
+        "Tracks stock quantities across variants, sends automated low-stock warnings to your dashboard, and ensures you never oversell a single product.",
     },
     {
       step: "04",
       icon: Truck,
-      title: "Pickup & Delivery Logistics",
+      title: "Pickup & Logistics Coordinator",
       description:
-        "Set up flexible pickup stations, configure localized shipping zones, and keep customers informed with instant order tracking.",
+        "Organizes regional dispatch stations, manages branch hours, and automatically sends customer SMS and email tracking updates from checkout to pickup.",
     },
     {
       step: "05",
-      icon: ShieldCheck,
-      title: "Bank-Grade Security",
+      icon: BarChart3,
+      title: "Retail Intelligence & Strategist",
       description:
-        "Rest easy with SSL encryption, fraud detection, and tokenized payment processing protecting both you and your buyers.",
+        "Delivers actionable sales analytics in Kes, tracks top-selling merchandise, and pinpoints peak shopping hours so you can make data-driven buying decisions.",
     },
     {
       step: "06",
-      icon: BarChart3,
-      title: "Real-Time Sales Insights",
+      icon: ShieldCheck,
+      title: "Bank-Grade Store Protection",
       description:
-        "Track daily revenue, customer trends, top-selling products, and inventory alerts with visual, easy-to-read reports.",
+        "Secures customer transactions with SSL encryption, tokenized checkout protocols, and fraud safeguards to keep your retail revenue and customer data locked down.",
     },
   ];
 
@@ -53,11 +53,11 @@ export default function Features() {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
-            Why <span className="text-primary">Soko</span><span className="text-secondary">Junction</span> is the engine your business needs
+            What your <span className="text-primary">Retail</span> <span className="text-secondary">Assistant</span> does for you
           </h2>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-            We handle the heavy lifting of eCommerce technology, server infrastructure, and payment routing
-            so you can focus on what you do best: creating great products and delighting customers.
+            Think of SokoJunction as your tireless store manager, cashier, and fulfillment dispatcher
+            working seamlessly together around the clock so you can focus on building your brand.
           </p>
         </div>
 

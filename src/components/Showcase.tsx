@@ -78,11 +78,11 @@ export default function Showcase() {
           }`}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-5">
-            See <span className="text-primary">Soko</span><span className="text-secondary">Junction</span> in Action
+            See Your <span className="text-primary">Retail</span> <span className="text-secondary">Assistant</span> in Action
           </h2>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-            Take a visual tour through our powerful ecosystem built to launch, run, and scale
-            your digital storefront with speed and confidence.
+            Take a visual tour through how SokoJunction automates your store operations —
+            from welcoming shoppers and instant cashiering to inventory warnings and sales intelligence.
           </p>
         </div>
 
@@ -150,10 +150,10 @@ export default function Showcase() {
                 </div>
                 <div>
                   <div className="text-xs font-bold text-gray-900">
-                    Instant M-Pesa Checkout
+                    Automated Cashiering
                   </div>
                   <div className="text-[11px] text-gray-500 font-medium">
-                    0.8s conversion-optimized speed
+                    0.8s instant M-Pesa STK push
                   </div>
                 </div>
               </div>
@@ -169,12 +169,10 @@ export default function Showcase() {
             }`}
           >
             <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight leading-tight">
-              Stunning, High-Converting Storefronts
+              The Always-On Digital Salesperson
             </h3>
             <p className="text-gray-600 text-base leading-relaxed">
-              First impressions matter. SokoJunction provides a suite of elegant, responsive designs
-              that reflect your brand&apos;s unique identity. Optimized for mobile shoppers, fast loading,
-              and seamless browsing across all modern devices.
+              First impressions convert shoppers into loyal customers. Your digital assistant showcases your products in a responsive, fast-loading storefront, answers item details with structured specs, and closes purchases with frictionless M-Pesa STK checkout.
             </p>
 
             <ul className="space-y-4 pt-1">
@@ -187,7 +185,7 @@ export default function Showcase() {
                   <Layout className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900">Customizable Themes:</span> Brand colors, typography, and banner layouts that fit your identity.
+                  <span className="font-bold text-gray-900">Conversion-First Storefront:</span> Mobile-optimized layouts built for lightning-fast product discovery.
                 </div>
               </li>
 
@@ -200,7 +198,7 @@ export default function Showcase() {
                   <Search className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900">Smart Navigation:</span> Category filtering, instant search, and variations for seamless customer discovery.
+                  <span className="font-bold text-gray-900">Automated M-Pesa Prompt:</span> Shoppers receive immediate checkout PIN prompts directly on their phones.
                 </div>
               </li>
 
@@ -213,7 +211,7 @@ export default function Showcase() {
                   <Globe className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900">Custom Domains:</span> Connect your own domain (e.g. yourbrand.com) with automated free SSL.
+                  <span className="font-bold text-gray-900">Custom Brand Identity:</span> Connect your custom domain with free automated SSL for undeniable customer trust.
                 </div>
               </li>
             </ul>
@@ -223,7 +221,7 @@ export default function Showcase() {
                 href={FX_LINKS.companyOnboarding}
                 className="group inline-flex items-center gap-2.5 px-7 py-3.5 text-sm font-bold text-white bg-primary hover:bg-primary-dark rounded-full transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               >
-                <span>Build Your Store Now</span>
+                <span>Deploy Your Sales Assistant</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </a>
             </div>
@@ -246,11 +244,10 @@ export default function Showcase() {
             }`}
           >
             <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight leading-tight">
-              Intuitive Admin Dashboard & Control
+              The Back-Office Operations Assistant
             </h3>
             <p className="text-gray-600 text-base leading-relaxed">
-              Manage inventory, update prices, track orders, and fulfill customer requests all from
-              a single, clutter-free dashboard. Designed for merchants who value speed and clarity.
+              Say goodbye to scattered notebooks and lost WhatsApp messages. Your retail assistant tracks inventory counts across variants, reconciles incoming payments, and organizes pickup station logistics from a unified dashboard.
             </p>
 
             <ul className="space-y-4 pt-1">
@@ -263,7 +260,7 @@ export default function Showcase() {
                   <Boxes className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900">Inventory Management:</span> Rapid product uploads, variant control, and automated low-stock warnings.
+                  <span className="font-bold text-gray-900">Live Inventory Auditing:</span> Automatic stock deductions upon confirmed payments with automated low-stock warnings.
                 </div>
               </li>
 
@@ -276,7 +273,7 @@ export default function Showcase() {
                   <Truck className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900">Fulfillment Workflow:</span> One-click order status transitions (Pending, Processing, Completed).
+                  <span className="font-bold text-gray-900">One-Tap Order Dispatch:</span> Move orders seamlessly from &lsquo;Paid&rsquo; to &lsquo;Dispatched&rsquo; or &lsquo;Ready at Pickup&rsquo;.
                 </div>
               </li>
 
@@ -289,7 +286,7 @@ export default function Showcase() {
                   <BellRing className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900">Automated Alerts:</span> Instant buyer SMS and email notifications upon dispatch and delivery.
+                  <span className="font-bold text-gray-900">Automated Customer Updates:</span> Instant buyer SMS and email notifications sent automatically upon dispatch.
                 </div>
               </li>
             </ul>
@@ -299,7 +296,7 @@ export default function Showcase() {
                 href={FX_LINKS.companyOnboarding}
                 className="group inline-flex items-center gap-2.5 px-7 py-3.5 text-sm font-bold text-white bg-secondary hover:bg-secondary-dark rounded-full transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               >
-                <span>Explore Merchant Demo</span>
+                <span>Explore Operations Assistant</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </a>
             </div>
@@ -440,7 +437,7 @@ export default function Showcase() {
                     +28.4% Revenue Uplift
                   </div>
                   <div className="text-[11px] text-gray-500 font-medium">
-                    AI-driven checkout funnel diagnostics
+                    Assistant-guided stock & price insights
                   </div>
                 </div>
               </div>
@@ -456,11 +453,10 @@ export default function Showcase() {
             }`}
           >
             <h3 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight leading-tight">
-              AI-Powered Insights for Smarter Decisions
+              The AI Business & Revenue Strategist
             </h3>
             <p className="text-gray-600 text-base leading-relaxed">
-              Leverage artificial intelligence and actionable business metrics to discover revenue trends,
-              optimize pricing, and personalize promotions to maximize customer lifetime value.
+              Make data-backed retail decisions without hiring expensive consultants. Your assistant tracks sales velocity, alerts you to high-demand items, and highlights your most profitable merchandise in Kes.
             </p>
 
             <ul className="space-y-4 pt-1">
@@ -473,7 +469,7 @@ export default function Showcase() {
                   <Users className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900">Customer Retention:</span> Cohort behavior tracking and repeat purchase probability scoring.
+                  <span className="font-bold text-gray-900">Customer Retention Signals:</span> Discover repeat buyers, VIP spenders, and customer loyalty trends at a glance.
                 </div>
               </li>
 
@@ -486,7 +482,7 @@ export default function Showcase() {
                   <Target className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900">Demand Forecasting:</span> Predictive inventory triggers to prevent stockouts and overstock.
+                  <span className="font-bold text-gray-900">Predictive Stock Forecasting:</span> Know exactly when to re-order inventory before popular items sell out.
                 </div>
               </li>
 
@@ -499,7 +495,7 @@ export default function Showcase() {
                   <LineChart className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="font-bold text-gray-900">Funnel Optimization:</span> Real-time cart abandonment diagnostics and conversion analytics.
+                  <span className="font-bold text-gray-900">Revenue & Margin Analytics:</span> Track real daily earnings and transaction volume with zero bookkeeping stress.
                 </div>
               </li>
             </ul>
@@ -509,7 +505,7 @@ export default function Showcase() {
                 href={FX_LINKS.companyOnboarding}
                 className="group inline-flex items-center gap-2.5 px-7 py-3.5 text-sm font-bold text-white bg-primary hover:bg-primary-dark rounded-full transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5"
               >
-                <span>Unlock Growth Analytics</span>
+                <span>Unlock Retail Intelligence</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </a>
             </div>

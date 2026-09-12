@@ -52,7 +52,7 @@ export default function AboutPage() {
             About <span className="text-primary">Soko</span><span className="text-secondary">Junction</span>
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
-            We build simple, powerful, and scalable commerce tools that empower local entrepreneurs and businesses to establish their digital storefronts and thrive in the modern marketplace.
+            We build an intelligent digital retail assistant that empowers local shop owners and businesses to automate storefronts, streamline cashiering with instant M-Pesa STK push, and thrive in the modern marketplace.
           </p>
         </div>
       </section>
@@ -75,10 +75,10 @@ export default function AboutPage() {
                 The Journey
               </h3>
               <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                Founded in 2023, SokoJunction emerged from a passion for simplifying the complexities of online retail. We saw a gap in the market for a platform that truly understood the needs of growing African businesses — offering robust, premium features without prohibitive costs or steep technical learning curves.
+                Founded in 2023, SokoJunction emerged from a passion for simplifying the complexities of retail and eCommerce. We saw a gap in the market for a solution that truly acts as an operational partner — taking over repetitive store tasks without prohibitive costs or steep technical learning curves.
               </p>
               <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                Our journey began with a single commitment: democratize eCommerce. We aim to make setting up an online storefront accessible, profitable, and effortless for every merchant.
+                Our journey began with a single commitment: democratize retail automation. We aim to make setting up and running a successful store effortless for every retailer.
               </p>
             </div>
 
@@ -87,10 +87,10 @@ export default function AboutPage() {
                 What We Offer
               </h3>
               <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                SokoJunction provides a comprehensive suite of digital merchant tools. Our platform includes customizable storefronts, secure payment integrations (such as instant M-Pesa STK push and Card billing in Kes), detailed inventory controls, advanced analytics, and integrated delivery systems.
+                SokoJunction provides a 24/7 digital retail assistant. Our platform handles automated cashiering, instant M-Pesa STK push and Card billing in Kes, live inventory controls, intelligent sales forecasting, and multi-location pickup logistics.
               </p>
               <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                Built on a modern stack emphasizing security, efficiency, and exceptional UX, we handle the infrastructure so you can focus on building your brand.
+                Built on a modern stack emphasizing security, speed, and exceptional UX, we handle the day-to-day operations so you can focus on building your brand.
               </p>
             </div>
           </div>

@@ -20,12 +20,11 @@ export default function FinalCTA() {
 
           <div className="relative z-10 max-w-3xl mx-auto">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight mb-6">
-              Ready to Transform Your Business?
+              Put Your Store Operations on Autopilot
             </h2>
 
             <p className="text-base sm:text-xl text-white/90 leading-relaxed font-normal mb-10 max-w-2xl mx-auto">
-              Join hundreds of thriving merchants who trust SokoJunction to power their online stores.
-              Experience high conversion rates, automated checkout, and complete business control.
+              Deploy SokoJunction as your 24/7 intelligent retail assistant today. Automate M-Pesa cashiering, track inventory in real-time, and manage fulfillment without the administrative headache.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -33,7 +32,7 @@ export default function FinalCTA() {
                 href={FX_LINKS.companyOnboarding}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 text-base sm:text-lg font-bold text-primary bg-white hover:bg-gray-100 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
               >
-                <span>Start Your Free Trial</span>
+                <span>Deploy Your Assistant</span>
                 <ArrowRight className="w-5 h-5 text-secondary" />
               </a>
 

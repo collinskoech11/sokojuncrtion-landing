@@ -5,39 +5,39 @@ import { ChevronDown } from "lucide-react";
 
 export const faqList = [
   {
-    question: "What is SokoJunction and who is it built for?",
+    question: "How does SokoJunction act as my retail assistant?",
     answer:
-      "SokoJunction is an all-in-one eCommerce platform built for entrepreneurs, SMEs, and growing businesses across Africa and globally. We provide powerful tools to launch, manage, and scale online storefronts effortlessly with zero coding required.",
+      "SokoJunction handles the core day-to-day operations of running a retail store. It acts as an automated cashier by triggering instant M-Pesa STK prompts and verifying payments, an inventory guardian tracking stock levels and alerting you to low inventory, a digital salesperson showcasing your products 24/7 on mobile devices, and an operations dispatcher coordinating order receipts and pickup stations.",
   },
   {
-    question: "Do I need technical or coding skills to use SokoJunction?",
+    question: "Do I need technical skills or staff training to use this retail assistant?",
     answer:
-      "Not at all! SokoJunction is designed for everyone. Our intuitive setup wizard and visual management dashboard allow you to launch a customized, professional store within 5 minutes without writing any code.",
+      "None whatsoever. SokoJunction is built for everyday shop owners. You can set up your store catalog, configure payment settings, and have your automated retail assistant operational in under 5 minutes without writing code.",
   },
   {
-    question: "What payment methods are supported on SokoJunction?",
+    question: "How does the automated M-Pesa cashier work?",
     answer:
-      "We support direct mobile money payments via M-Pesa, debit/credit cards (Visa, Mastercard), and bank payouts. Buyers experience instant, frictionless checkout, and funds settle directly into your merchant account.",
+      "When a buyer checks out on your storefront, SokoJunction automatically triggers an instant M-Pesa STK push directly to their mobile handset. Once they enter their PIN, payment verifies in seconds, inventory auto-deducts, and an order receipt is generated immediately without any manual confirmation needed.",
   },
   {
-    question: "Can I use my own custom domain name (e.g. yourstore.com)?",
+    question: "How does the assistant help me prevent running out of stock?",
     answer:
-      "Yes! You can connect your own custom domain name to your SokoJunction store on our Growth and Usage Based plans, or use our fast, secure subdomain (e.g. shop.sokojunction.com/shop/yourstore).",
+      "Every time a purchase is verified, your assistant updates inventory counts across sizes and variants in real time. It monitors thresholds and sends automated low-stock warnings to your dashboard and mobile app so you know precisely when to replenish high-demand items.",
   },
   {
-    question: "Can I upgrade, downgrade, or cancel my plan at any time?",
+    question: "Can the retail assistant coordinate multiple branches or pickup stations?",
     answer:
-      "Absolutely. Business needs fluctuate, so you have full flexibility to upgrade, downgrade, or switch between plans at any time from your merchant dashboard with no lock-in contracts or cancellation fees.",
+      "Yes! You can configure multiple physical branches, dispatch points, or partner pickup locations. Your assistant routes orders to the correct station, tracks order progress, and notifies customers when their package is ready for collection.",
   },
   {
-    question: "How does SokoJunction handle shipping and pickup stations?",
+    question: "Is there really a free tier for small stores?",
     answer:
-      "SokoJunction gives you full control over delivery. You can define custom pickup locations (with operating hours and landmark notes), configure regional shipping rates, and generate delivery dispatch tags directly from the orders panel.",
+      "Yes! Our Starter tier is completely free for up to 50 orders per month. As your order volume grows, our Growth plan is approx. Kes 1,500 per month for 50–500 orders, giving you powerful 24/7 store management for a fraction of staff payroll.",
   },
   {
-    question: "What customer support options are available?",
+    question: "Can I connect my own custom domain (e.g. yourstore.com)?",
     answer:
-      "All merchants receive responsive email support, platform guides, and knowledgebase access. Growth and Usage Based tier merchants also get dedicated developer assistance and priority onboarding support.",
+      "Yes! You can connect your custom domain name with automated free SSL encryption on our Growth and Usage Based plans, or use our fast, secure subdomain (e.g. shop.sokojunction.com/shop/yourstore).",
   },
 ];
 
@@ -73,10 +73,10 @@ export default function FAQ() {
         {/* Section Header */}
         <div className="text-center mb-16 md:mb-20">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
-            Got Questions? <span className="text-primary">We&apos;ve Got</span> <span className="text-secondary">Answers</span>
+            Got Questions? <span className="text-primary">Your Retail Assistant</span> <span className="text-secondary">Explained</span>
           </h2>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-            Everything you need to know about setting up, launching, and growing your store on SokoJunction.
+            Everything you need to know about how SokoJunction runs your store operations, automates cashiering, and manages inventory.
           </p>
         </div>
 

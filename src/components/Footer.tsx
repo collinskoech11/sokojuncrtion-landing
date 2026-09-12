@@ -31,8 +31,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-sm text-gray-300 leading-relaxed max-w-sm">
-              The modern eCommerce operating system designed for African businesses, SMEs, and digital entrepreneurs.
-              Build your custom shop, accept payments seamlessly, and scale your brand.
+              The intelligent retail assistant and commerce operating system designed for African businesses, SMEs, and digital merchants. Automate storefronts, M-Pesa cashiering, and fulfillment.
             </p>
 
             <div className="space-y-2 text-xs text-gray-400">
@@ -74,12 +73,12 @@ export default function Footer() {
               </li>
               <li>
                 <a href="/#features" className="hover:text-white transition-colors">
-                  Storefront Features
+                  Assistant Capabilities
                 </a>
               </li>
               <li>
                 <a href="/#showcase" className="hover:text-white transition-colors">
-                  Product Tour
+                  Assistant in Action
                 </a>
               </li>
               <li>
@@ -94,7 +93,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="/#testimonials" className="hover:text-white transition-colors">
-                  Client Reviews
+                  Retailer Reviews
                 </a>
               </li>
             </ul>
@@ -121,7 +120,7 @@ export default function Footer() {
                   href={FX_LINKS.companyOnboarding}
                   className="hover:text-white transition-colors"
                 >
-                  Merchant Registration
+                  Deploy Retail Assistant
                 </a>
               </li>
               <li>

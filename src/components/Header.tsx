@@ -19,8 +19,8 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { name: "Features", href: "/#features" },
-    { name: "Product Tour", href: "/#showcase" },
+    { name: "Capabilities", href: "/#features" },
+    { name: "Assistant in Action", href: "/#showcase" },
     { name: "Pricing", href: "/#pricing" },
     { name: "About", href: "/about" },
     { name: "Mobile App", href: "/mobile-app" },
@@ -36,36 +36,36 @@ export default function Header() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 md:h-20 gap-4">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-white transition-transform group-hover:scale-105 flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-white transition-transform group-hover:scale-105 flex items-center justify-center flex-shrink-0">
               <Image
                 src="/sokojunction_no_bg_mini.jpeg"
                 alt="SokoJunction Logo"
                 fill
                 className="object-contain p-0.5"
-                sizes="(max-width: 640px) 40px, 44px"
+                sizes="40px"
                 priority
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-xl tracking-tight text-primary">
+              <span className="font-extrabold text-lg sm:text-xl tracking-tight text-primary whitespace-nowrap">
                 Soko<span className="text-secondary">Junction</span>
               </span>
-              <span className="text-[10px] text-gray-500 font-medium tracking-wide uppercase">
-                eCommerce Platform
+              <span className="text-[7.5px] sm:text-[8px] text-gray-500 font-bold tracking-wider uppercase whitespace-nowrap">
+                Smart Retail Assistant
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-8" aria-label="Main Navigation">
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 flex-shrink-0" aria-label="Main Navigation">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="text-sm font-semibold text-gray-700 hover:text-primary transition-colors"
+                className="text-xs xl:text-[13px] font-semibold text-gray-700 hover:text-primary transition-colors whitespace-nowrap"
               >
                 {link.name}
               </a>
@@ -73,14 +73,14 @@ export default function Header() {
           </nav>
 
           {/* Action CTAs */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2 xl:gap-2.5 flex-shrink-0">
             <a
               href={FX_LINKS.shops}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-full transition-colors border border-gray-200"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:text-primary hover:bg-gray-50 rounded-full transition-colors border border-gray-200 whitespace-nowrap"
             >
-              <Store className="w-4 h-4 text-primary" />
+              <Store className="w-3.5 h-3.5 text-primary" />
               <span>Explore Marketplace</span>
             </a>
 
@@ -88,18 +88,18 @@ export default function Header() {
               href={FX_LINKS.login}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/5 rounded-full transition-colors"
+              className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/5 rounded-full transition-colors whitespace-nowrap"
             >
-              <LogIn className="w-4 h-4" />
+              <LogIn className="w-3.5 h-3.5" />
               <span>Sign In</span>
             </a>
 
             <a
               href={FX_LINKS.companyOnboarding}
-              className="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-bold text-white bg-secondary hover:bg-secondary-dark rounded-full shadow-sm hover:shadow transition-all duration-200"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-secondary hover:bg-secondary-dark rounded-full shadow-sm hover:shadow transition-all duration-200 whitespace-nowrap"
             >
-              <span>Start Selling</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>Get Your Assistant</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
 
@@ -107,7 +107,7 @@ export default function Header() {
           <div className="lg:hidden flex items-center gap-2">
             <a
               href={FX_LINKS.companyOnboarding}
-              className="sm:inline-flex hidden items-center px-3.5 py-1.5 text-xs font-bold text-white bg-secondary rounded-full shadow-sm"
+              className="sm:inline-flex hidden items-center px-3 py-1.5 text-xs font-bold text-white bg-secondary rounded-full shadow-sm whitespace-nowrap"
             >
               Start Free
             </a>
@@ -116,7 +116,7 @@ export default function Header() {
               className="p-2 rounded-xl text-gray-700 hover:text-primary hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -131,21 +131,21 @@ export default function Header() {
                 key={link.name}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3 py-2.5 rounded-lg text-base font-semibold text-gray-800 hover:bg-gray-50 hover:text-primary transition-colors"
+                className="px-3 py-2 rounded-lg text-sm font-semibold text-gray-800 hover:bg-gray-50 hover:text-primary transition-colors whitespace-nowrap"
               >
                 {link.name}
               </a>
             ))}
           </div>
 
-          <div className="pt-4 border-t border-gray-100 flex flex-col gap-2.5">
+          <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
             <a
               href={FX_LINKS.shops}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors border border-gray-200"
+              className="flex items-center justify-center gap-1.5 w-full py-2 px-3 text-xs font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors border border-gray-200 whitespace-nowrap"
             >
-              <Store className="w-4 h-4 text-primary" />
+              <Store className="w-3.5 h-3.5 text-primary" />
               <span>Explore Marketplace</span>
             </a>
 
@@ -153,18 +153,18 @@ export default function Header() {
               href={FX_LINKS.login}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 w-full py-2.5 px-4 text-sm font-semibold text-primary border border-primary/20 rounded-xl hover:bg-primary/5 transition-colors"
+              className="flex items-center justify-center gap-1.5 w-full py-2 px-3 text-xs font-semibold text-primary border border-primary/20 rounded-xl hover:bg-primary/5 transition-colors whitespace-nowrap"
             >
-              <LogIn className="w-4 h-4" />
+              <LogIn className="w-3.5 h-3.5" />
               <span>Sign In</span>
             </a>
 
             <a
               href={FX_LINKS.companyOnboarding}
-              className="flex items-center justify-center gap-2 w-full py-3 px-4 text-sm font-bold text-white bg-secondary hover:bg-secondary-dark rounded-xl shadow transition-colors"
+              className="flex items-center justify-center gap-1.5 w-full py-2.5 px-3 text-xs font-bold text-white bg-secondary hover:bg-secondary-dark rounded-xl shadow transition-colors whitespace-nowrap"
             >
-              <span>Start Selling Now</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>Get Your Assistant</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>

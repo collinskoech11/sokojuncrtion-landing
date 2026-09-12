@@ -24,20 +24,22 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "SokoJunction — Launch & Scale Your Online Store Effortlessly",
-    template: "%s | SokoJunction",
+    default: "SokoJunction — Your 24/7 Intelligent Retail Assistant",
+    template: "%s | SokoJunction Retail Assistant",
   },
   description:
-    "SokoJunction provides the all-in-one infrastructure to launch, scale, and manage your commerce business. Instant storefronts, frictionless checkout, automated marketing, and AI insights.",
+    "SokoJunction is the all-in-one digital retail assistant for modern businesses and shop owners. Automate inventory, streamline orders with instant M-Pesa STK checkout, coordinate pickup logistics, and scale your store operations effortlessly.",
   keywords: [
-    "ecommerce platform",
-    "online store builder",
+    "retail assistant",
+    "smart retail assistant",
+    "AI store manager",
+    "automated eCommerce",
+    "shop management assistant",
     "SokoJunction",
-    "sell online",
-    "instant storefront",
-    "online shopping Kenya",
-    "digital commerce",
-    "SME ecommerce solution",
+    "M-Pesa retail automation",
+    "store inventory assistant",
+    "digital cashier Kenya",
+    "retail operations software",
     "African marketplace",
   ],
   authors: [{ name: "SokoJunction Team", url: siteUrl }],
@@ -52,9 +54,9 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "SokoJunction — Launch & Scale Your Online Store Effortlessly",
+    title: "SokoJunction — Your 24/7 Intelligent Retail Assistant",
     description:
-      "The complete commerce engine for modern businesses. Launch a custom storefront in minutes, accept secure payments, and grow with built-in analytics.",
+      "Automate your retail store operations: live inventory tracking, instant M-Pesa STK push cashiering, order fulfillment coordination, and sales intelligence.",
     url: siteUrl,
     siteName: "SokoJunction",
     images: [
@@ -70,9 +72,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SokoJunction — Launch & Scale Your Online Store Effortlessly",
+    title: "SokoJunction — Your 24/7 Intelligent Retail Assistant",
     description:
-      "All-in-one infrastructure to launch, manage, and scale your commerce business. No coding required.",
+      "The smart retail assistant that runs your store operations 24/7. Automated inventory, instant checkout, and sales insights.",
     images: ["/logo_min.jpeg"],
   },
   robots: {

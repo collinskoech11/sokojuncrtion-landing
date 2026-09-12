@@ -21,7 +21,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     name: "Brandroad Inc.",
     role: "Corporate Merchandising",
     quote:
-      "From storefront creation to scalable growth tools, SokoJunction offers everything an e-commerce business needs. It's a robust and reliable platform that has helped us expand our reach and connect with a wider audience. Highly recommended for any business looking to succeed in the digital marketplace.",
+      "From automated catalog management to instant checkout, SokoJunction is the retail assistant every growing store needs. It eliminated manual spreadsheets, freed up our team, and keeps our inventory perfectly in sync across every order.",
     rating: 5,
     avatar: "https://res.cloudinary.com/dqokryv6u/image/upload/v1752494263/vfi0cbjbomtcboncu1ta.jpg",
     shopUrl: "https://brandroadinc.com",
@@ -31,7 +31,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     name: "Boromoto Store",
     role: "Retail & Lifestyle",
     quote:
-      "As a shop manager, efficiency is key. SokoJunction's intuitive dashboard allows me to manage inventory, process orders, and track customer interactions all from one place. It's significantly streamlined our operations and freed up time to focus on what we do best – serving our customers.",
+      "Having SokoJunction act as our 24/7 retail assistant is a total game-changer. It tracks stock across variants in real-time, prompts shoppers for M-Pesa instantly, and handles pickup station logistics without missing a single order. It's like having an experienced store manager on staff.",
     rating: 5,
     avatar: "https://res.cloudinary.com/dqokryv6u/image/upload/v1753884445/fzasz0rupf116alper7i.png",
     shopUrl: "https://www.boromoto.com",
@@ -41,7 +41,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     name: "The Cup Couture",
     role: "Custom Drinkware & Merch",
     quote:
-      "SokoJunction transformed how we take orders across Kenya. Customers love the instant M-Pesa checkout, and being able to manage pickup stations in one central dashboard saved us hours every single day.",
+      "SokoJunction transformed our retail operations. It takes orders at midnight, triggers M-Pesa STK prompts automatically, and verifies payments instantly. It has eliminated manual payment reconciliation and saved us hours of daily admin work.",
     rating: 5,
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
     shopUrl: "https://www.cupcoutureshop.com",
@@ -51,7 +51,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     name: "Self Defense KE",
     role: "Safety & Gear Merchant",
     quote:
-      "Managing orders and regional pickups used to take multiple separate spreadsheets. With SokoJunction, dispatch and receipt generation happen in seconds. Best eCommerce platform hands down.",
+      "Managing orders and regional pickup points used to take multiple messy spreadsheets. With SokoJunction acting as our digital cashier and fulfillment assistant, receipt generation and dispatch happen automatically on autopilot.",
     rating: 5,
     avatar: "https://res.cloudinary.com/dqokryv6u/image/upload/v1770117470/dlrhvbjuzknb6vpozh2k.png",
     shopUrl: "#",
@@ -209,10 +209,10 @@ export default function Testimonials({
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
           <div className="max-w-2xl">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
-              Trusted by <span className="text-primary">Ambitious</span> <span className="text-secondary">Merchants</span>
+              How Shop Owners Rely on Their <span className="text-primary">Retail</span> <span className="text-secondary">Assistant</span>
             </h2>
             <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-              Discover how small and medium businesses scale sales and streamline order fulfillment with SokoJunction.
+              Discover how ambitious retailers cut admin hours, eliminated manual bookkeeping, and scaled their sales with SokoJunction.
             </p>
           </div>
 

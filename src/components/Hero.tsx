@@ -63,9 +63,9 @@ const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
 export default function Hero({ initialStats }: { initialStats?: PlatformStats | null }) {
   const [wordIndex, setWordIndex] = useState(0);
   const words = [
-    { primary: "Dream", secondary: "Store." },
-    { primary: "Digital", secondary: "Empire." },
-    { primary: "Future", secondary: "Today." },
+    { primary: "Smart", secondary: "Retail Assistant." },
+    { primary: "24/7 Digital", secondary: "Store Cashier." },
+    { primary: "Automated", secondary: "Commerce Engine." },
   ];
 
   const [stats, setStats] = useState<PlatformStats>(
@@ -311,7 +311,7 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
         <div className="relative max-w-4xl mx-auto text-center">
           {/* Primary SEO Heading (H1) */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900 leading-[1.1] mb-6">
-            Build your <br className="hidden sm:inline" />
+            Meet your <br className="hidden sm:inline" />
             <span className="transition-all duration-500 inline-block min-h-[1.2em]">
               <span className="text-primary">{words[wordIndex].primary}</span>{" "}
               <span className="text-secondary">{words[wordIndex].secondary}</span>
@@ -320,8 +320,8 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
 
           {/* Subheading */}
           <p className="max-w-2xl mx-auto text-lg sm:text-xl text-gray-600 font-normal leading-relaxed mb-10">
-            SokoJunction provides the all-in-one infrastructure to launch, scale, and manage
-            your commerce business. Fast setup, secure payments, and powerful tools — no coding required.
+            SokoJunction is the intelligent retail assistant that runs your store operations.
+            From live inventory management and instant M-Pesa STK push cashiering to pickup logistics and sales intelligence — so you can focus on growing your brand.
           </p>
 
           {/* Action CTAs */}
@@ -330,7 +330,7 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
               href={FX_LINKS.companyOnboarding}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 text-base sm:text-lg font-bold text-white bg-secondary hover:bg-secondary-dark rounded-full shadow-lg shadow-secondary/25 hover:shadow-xl hover:shadow-secondary/35 transform hover:-translate-y-0.5 transition-all duration-200"
             >
-              <span>Start Selling Now</span>
+              <span>Deploy Your Retail Assistant</span>
               <ArrowRight className="w-5 h-5" />
             </a>
 
@@ -341,7 +341,7 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 text-base sm:text-lg font-semibold text-primary bg-white hover:bg-gray-50 rounded-full border border-gray-200 shadow-sm hover:border-primary/40 transition-all duration-200"
             >
               <ShoppingBag className="w-5 h-5 text-primary" />
-              <span>Browse Active Shops</span>
+              <span>Browse Active Stores</span>
             </a>
           </div>
 
@@ -349,7 +349,7 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm text-gray-600 mb-16">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-secondary" />
-              <span>Free Starter Plan</span>
+              <span>Free Starter Tier (0–50 Orders)</span>
             </div>
             <div className="flex items-center gap-2">
               <Zap className="w-4 h-4 text-secondary" />
@@ -357,7 +357,7 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
             </div>
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-secondary" />
-              <span>Secure M-Pesa & Card Checkout</span>
+              <span>Automated M-Pesa & Card Cashier</span>
             </div>
           </div>
 
@@ -370,7 +370,7 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
                   formatFn={(val) => `${val.toLocaleString()}+`}
                 />
               </div>
-              <div className="text-sm font-semibold text-gray-600">Active Merchants</div>
+              <div className="text-sm font-semibold text-gray-600">Retailers Assisted</div>
             </div>
 
             <div className="text-center sm:border-x sm:border-gray-200">
@@ -380,7 +380,7 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
                   formatFn={(val) => `${val.toLocaleString()}+`}
                 />
               </div>
-              <div className="text-sm font-semibold text-gray-600">Orders Completed</div>
+              <div className="text-sm font-semibold text-gray-600">Orders Handled Automatically</div>
             </div>
 
             <div className="text-center">
@@ -390,7 +390,7 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
                   formatFn={formatVolume}
                 />
               </div>
-              <div className="text-sm font-semibold text-gray-600">Transaction Volume</div>
+              <div className="text-sm font-semibold text-gray-600">Retail Volume Processed</div>
             </div>
           </div>
         </div>

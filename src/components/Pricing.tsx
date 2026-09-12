@@ -7,75 +7,75 @@ export default function Pricing() {
   const plans = [
     {
       id: 1,
-      title: "Starter",
-      subtitle: "For new stores starting out",
+      title: "Starter Assistant",
+      subtitle: "Essential automation for emerging stores",
       orderVolume: "0 – 50 orders / month",
       prefix: "",
       currency: "Kes",
       price: "0",
       billing: "Free",
-      desc: "Free tier for emerging businesses processing up to 50 orders monthly.",
+      desc: "Your essential digital retail assistant for new businesses processing up to 50 orders monthly.",
       usageNote: "Zero monthly fee for stores within 0 – 50 monthly orders",
       features: [
         "Up to 50 Orders per Month",
-        "Unlimited Product Listings",
-        "Mobile-Responsive Storefront",
-        "Integrated M-Pesa & Card Checkout",
-        "Standard Sales Analytics",
+        "Automated M-Pesa & Card Cashier",
+        "24/7 Mobile-Optimized Storefront",
+        "Unlimited Product Catalog Uploads",
+        "Live Inventory Tracking & Alerts",
         "Email Support & Notifications",
         "Custom Domain Connection",
       ],
       popular: false,
-      ctaText: "Start Free (0–50 Orders)",
+      ctaText: "Activate Free Assistant",
       ctaHref: FX_LINKS.companyOnboarding,
     },
     {
       id: 2,
-      title: "Growth",
-      subtitle: "For scaling shops",
+      title: "Growth Assistant",
+      subtitle: "Full automation for scaling shops",
       orderVolume: "50 – 500 orders / month",
       prefix: "approx.",
       currency: "Kes",
       price: "1,500",
       billing: "/ month",
-      desc: "Designed for established brands processing 50 to 500 orders monthly.",
+      desc: "Full-power retail assistant for busy shops processing 50 to 500 orders monthly.",
       usageNote: "Usage-based approx. monthly cost based on platform activity",
       features: [
         "50 – 500 Orders per Month",
-        "All Starter tier capabilities",
-        "Priority Marketplace Listing",
-        "Merchant Mobile App Access",
-        "Free Custom Domain Support",
+        "All Starter Assistant capabilities",
         "Automated Customer SMS / Email Alerts",
-        "Pickup Station & Logistics Management",
-        "Dedicated Developer Support",
+        "Multi-Pickup Station & Branch Logistics",
+        "SokoJunction Manager Mobile App Access",
+        "Priority Marketplace Recommendation",
+        "Free Custom Domain Connection",
+        "Dedicated Technical Support",
       ],
       popular: true,
-      ctaText: "Choose Growth (50–500 Orders)",
+      ctaText: "Deploy Growth Assistant",
       ctaHref: FX_LINKS.companyOnboarding,
     },
     {
       id: 3,
       title: "Usage Based",
-      subtitle: "Built for large scale businesses",
+      subtitle: "Built for large scale retail businesses",
       orderVolume: "500+ orders / month",
       prefix: "",
       currency: "",
       price: "Scale",
       billing: "Volume-based",
-      desc: "Built for large scale businesses and high-volume enterprise operations.",
+      desc: "Built for large scale businesses, high-order retailers, and multi-location operations.",
       usageNote: "Custom usage pricing tailored to large monthly order volumes",
       features: [
         "500+ Orders per Month (Unlimited Scale)",
         "Volume-based dynamic tier pricing",
         "Multi-User Staff Roles & Permissions",
-        "AI Marketing Insights & Demand Forecasting",
+        "AI Merchandising Insights & Demand Forecasting",
         "High-Throughput API & Webhooks",
         "Multi-Warehouse & Regional Dispatch Routing",
         "Dedicated Account Manager & 24/7 Priority Support",
       ],
       popular: false,
-      ctaText: "Contact for Scale Pricing",
+      ctaText: "Talk to Retail Specialist",
       ctaHref: "#contact",
     },
   ];
@@ -86,11 +86,10 @@ export default function Pricing() {
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mb-4">
-            Simple, <span className="text-primary">Transparent</span> <span className="text-secondary">Pricing</span>
+            An Executive <span className="text-primary">Retail</span> <span className="text-secondary">Assistant</span> for Less
           </h2>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
-            Choose the plan that fits your business stage. Pricing is based on platform usage,
-            billed approx. per month with zero hidden fees. Currency in Kenyan Shillings (Kes).
+            No expensive payroll or staff overhead. Pricing is based on platform usage and billed approx. per month according to order volume with zero hidden fees. Currency in Kes.
           </p>
         </div>
 

@@ -49,10 +49,10 @@ export default function Contact() {
         <div className="bg-white rounded-3xl p-8 sm:p-12 md:p-16 border border-gray-200/80 shadow-xl shadow-gray-200/40">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-3">
-              Contact <span className="text-primary">Our</span> <span className="text-secondary">Team</span>
+              Talk to a <span className="text-primary">Retail</span> <span className="text-secondary">Specialist</span>
             </h2>
             <p className="text-base text-gray-600">
-              Have a question about plans, migrations, or custom enterprise solutions? We&apos;re here to help.
+              Have questions about automating your store, migrating from manual bookkeeping, or setting up multi-branch operations? We&apos;re here to help.
             </p>
           </div>
 
@@ -116,7 +116,7 @@ export default function Contact() {
                 rows={4}
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Tell us about your store requirements or questions..."
+                placeholder="Tell us about your retail shop, order volumes, or operational questions..."
                 className="w-full px-4 py-3.5 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm transition-all resize-none"
               />
             </div>

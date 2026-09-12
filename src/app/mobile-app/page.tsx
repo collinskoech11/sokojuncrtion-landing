@@ -76,7 +76,7 @@ export default function MobileAppPage() {
           </h1>
 
           <p className="text-base sm:text-xl text-gray-200 max-w-2xl mx-auto leading-relaxed mb-10">
-            Your business doesn&apos;t stop when you step away from your desk. Monitor live orders, manage inventory, and grow your storefront from anywhere.
+            Your 24/7 retail assistant in your pocket. Monitor live orders, receive real-time M-Pesa sale alerts, update stock counts, and coordinate branch pickups wherever you are.
           </p>
 
           {/* Download Action Buttons */}
@@ -109,13 +109,13 @@ export default function MobileAppPage() {
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <p className="text-primary font-bold text-xs uppercase tracking-widest mb-2">
-            Powerful Mobile Capabilities
+            Mobile Retail Capabilities
           </p>
           <h2 className="text-2xl sm:text-4xl font-extrabold text-[#18181b] tracking-tight mb-3">
-            Everything You Need to Scale on the Go
+            Your Assistant on the Go
           </h2>
           <p className="text-gray-600 text-sm sm:text-base">
-            The SokoJunction Manager mobile suite is built for lightning speed, offline resilience, and daily efficiency.
+            The SokoJunction Manager mobile suite brings your intelligent retail assistant to your fingertips for daily store efficiency.
           </p>
         </div>
 
@@ -197,10 +197,10 @@ export default function MobileAppPage() {
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 text-center">
         <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 sm:p-12">
           <h2 className="text-2xl sm:text-3xl font-extrabold text-[#18181b] tracking-tight mb-3">
-            Ready to Take Control of Your Store?
+            Ready to Put Your Store on Autopilot?
           </h2>
           <p className="text-gray-600 text-sm sm:text-base max-w-md mx-auto mb-8">
-            Join hundreds of smart merchants optimizing their daily workflow with SokoJunction Manager.
+            Join hundreds of smart retailers optimizing their daily workflow with their personal retail assistant.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -217,7 +217,7 @@ export default function MobileAppPage() {
               href={FX_LINKS.companyOnboarding}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold text-primary bg-primary/10 hover:bg-primary/20 transition-all"
             >
-              <span>Register as Merchant</span>
+              <span>Deploy Retail Assistant</span>
               <ArrowRight className="w-4 h-4" />
             </a>
           </div>
