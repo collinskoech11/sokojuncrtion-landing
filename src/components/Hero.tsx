@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { ArrowRight, CheckCircle2, ShieldCheck, Zap, ShoppingBag } from "lucide-react";
 import { FX_LINKS, BACKEND_URL } from "@/lib/constants";
+import ShatterConfettiText, { WordPhrase } from "@/components/ShatterConfettiText";
 
 export interface PlatformStats {
   total_merchants: number;
@@ -61,8 +62,7 @@ const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
 };
 
 export default function Hero({ initialStats }: { initialStats?: PlatformStats | null }) {
-  const [wordIndex, setWordIndex] = useState(0);
-  const words = [
+  const heroPhrases: WordPhrase[] = [
     { primary: "Smart", secondary: "Retail Assistant." },
     { primary: "24/7 Digital", secondary: "Store Cashier." },
     { primary: "Automated", secondary: "Commerce Engine." },
@@ -75,13 +75,6 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
       total_volume: 1800000,
     }
   );
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % words.length);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [words.length]);
 
   const [isMounted, setIsMounted] = useState(false);
   const [activeStars, setActiveStars] = useState<ShootingStarItem[]>([]);
@@ -312,10 +305,7 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
           {/* Primary SEO Heading (H1) */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900 leading-[1.1] mb-6">
             Meet your <br className="hidden sm:inline" />
-            <span className="transition-all duration-500 inline-block min-h-[1.2em]">
-              <span className="text-primary">{words[wordIndex].primary}</span>{" "}
-              <span className="text-secondary">{words[wordIndex].secondary}</span>
-            </span>
+            <ShatterConfettiText phrases={heroPhrases} intervalMs={3800} />
           </h1>
 
           {/* Subheading */}
