@@ -304,8 +304,8 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
         <div className="relative max-w-4xl mx-auto text-center">
           {/* Primary SEO Heading (H1) */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-gray-900 leading-[1.1] mb-6">
-            Meet your <br className="hidden sm:inline" />
-            <ShatterConfettiText phrases={heroPhrases} intervalMs={3800} />
+            Meet your <br />
+            <ShatterConfettiText phrases={heroPhrases} intervalMs={4000} />
           </h1>
 
           {/* Subheading */}

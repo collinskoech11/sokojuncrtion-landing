@@ -7,23 +7,17 @@ export interface WordPhrase {
   secondary: string;
 }
 
-interface Particle {
+interface DotParticle {
   x: number;
   y: number;
   vx: number;
   vy: number;
-  type: "shard" | "confetti" | "glint";
+  radius: number;
   color: string;
-  width: number;
-  height: number;
-  rotation: number;
-  vRotation: number;
-  tiltAngle: number;
-  vTilt: number;
   opacity: number;
   life: number;
   maxLife: number;
-  points?: { x: number; y: number }[];
+  glow?: boolean;
 }
 
 interface ShatterConfettiTextProps {
@@ -32,142 +26,90 @@ interface ShatterConfettiTextProps {
   className?: string;
 }
 
-const BRAND_COLORS = [
-  "#35408F", // SokoJunction Primary Blue
-  "#EF5C2A", // SokoJunction Secondary Orange
-  "#10B981", // Emerald
-  "#F59E0B", // Amber
-  "#8B5CF6", // Violet
-  "#38BDF8", // Sky Blue
-  "#EC4899", // Pink
+// Exact Blue and Orange colors sampled directly from SokoJunction Logo (logo_min.jpeg)
+const LOGO_BLUE = "#35408F"; // rgb(53, 64, 143)
+const LOGO_ORANGE = "#EF5C2A"; // rgb(239, 92, 42)
+
+// Vibrant and subtle dot shades strictly derived from logo hues
+const LOGO_BLUE_DOTS = [
+  "#35408F", // Exact logo primary blue
+  "#4B5AB8", // Logo blue light highlight
+  "#252D66", // Logo blue deep navy
+  "#2563EB", // Bright royal blue
+  "#5C6BC0", // Soft blue glow
+];
+
+const LOGO_ORANGE_DOTS = [
+  "#EF5C2A", // Exact logo secondary orange
+  "#F37B53", // Logo orange coral
+  "#C94517", // Logo orange deep rust
+  "#F97316", // Vivid bright orange
+  "#FF8A65", // Warm peach glow
 ];
 
 export default function ShatterConfettiText({
   phrases,
-  intervalMs = 3800,
+  intervalMs = 4000,
   className = "",
 }: ShatterConfettiTextProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [phase, setPhase] = useState<"idle" | "shattering" | "entering">("idle");
+  const [maxHeight, setMaxHeight] = useState<number | null>(null);
+
   const containerRef = useRef<HTMLSpanElement>(null);
+  const probeRef = useRef<HTMLSpanElement>(null);
+  const primarySpanRef = useRef<HTMLSpanElement>(null);
+  const secondarySpanRef = useRef<HTMLSpanElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particlesRef = useRef<Particle[]>([]);
+
+  const isAnimatingRef = useRef(false);
+  const particlesRef = useRef<DotParticle[]>([]);
   const animFrameIdRef = useRef<number | null>(null);
 
-  // Helper to spawn shattering glass shards and confetti ribbons
-  const spawnBurst = useCallback(() => {
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
+  // Measure all phrases in probe to lock container height permanently and eliminate layout shifts
+  const measureHeights = useCallback(() => {
+    const probe = probeRef.current;
+    if (!probe) return;
 
-    const rect = container.getBoundingClientRect();
-    const cRect = canvas.getBoundingClientRect();
-
-    // Center coordinates relative to canvas
-    const centerX = rect.left - cRect.left + rect.width / 2;
-    const centerY = rect.top - cRect.top + rect.height / 2;
-
-    const newParticles: Particle[] = [];
-
-    // 1. Shattering shards (angular polygon fragments radiating outward)
-    const numShards = 36;
-    for (let i = 0; i < numShards; i++) {
-      const angle = (Math.PI * 2 * i) / numShards + (Math.random() - 0.5) * 0.4;
-      const speed = 4 + Math.random() * 8;
-      const vx = Math.cos(angle) * speed;
-      const vy = Math.sin(angle) * speed - 2.5; // slight upward pop
-      const color = Math.random() > 0.5 ? "#35408F" : "#EF5C2A";
-
-      // Build random triangular/polygonal shard
-      const s = 6 + Math.random() * 10;
-      const points = [
-        { x: -s / 2, y: -s / 2 },
-        { x: s / 2 + (Math.random() - 0.5) * 4, y: -s / 4 },
-        { x: (Math.random() - 0.5) * 4, y: s / 2 },
-      ];
-
-      newParticles.push({
-        x: centerX + (Math.random() - 0.5) * (rect.width * 0.7),
-        y: centerY + (Math.random() - 0.5) * (rect.height * 0.7),
-        vx,
-        vy,
-        type: "shard",
-        color,
-        width: s,
-        height: s,
-        rotation: Math.random() * Math.PI * 2,
-        vRotation: (Math.random() - 0.5) * 0.35,
-        tiltAngle: Math.random() * Math.PI,
-        vTilt: 0,
-        opacity: 1,
-        life: 0,
-        maxLife: 45 + Math.random() * 25,
-        points,
-      });
+    const children = probe.children;
+    let maxH = 0;
+    for (let i = 0; i < children.length; i++) {
+      const el = children[i] as HTMLElement;
+      if (el.offsetHeight > maxH) {
+        maxH = el.offsetHeight;
+      }
     }
-
-    // 2. Confetti ribbons & fluttering pieces
-    const numConfetti = 50;
-    for (let i = 0; i < numConfetti; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 3 + Math.random() * 7;
-      const vx = Math.cos(angle) * speed;
-      const vy = Math.sin(angle) * speed - 4.5; // upward burst
-      const color = BRAND_COLORS[Math.floor(Math.random() * BRAND_COLORS.length)];
-      const isSquare = Math.random() > 0.5;
-
-      newParticles.push({
-        x: centerX + (Math.random() - 0.5) * (rect.width * 0.8),
-        y: centerY + (Math.random() - 0.5) * (rect.height * 0.6),
-        vx,
-        vy,
-        type: "confetti",
-        color,
-        width: isSquare ? 7 + Math.random() * 5 : 4 + Math.random() * 4,
-        height: isSquare ? 7 + Math.random() * 5 : 10 + Math.random() * 8,
-        rotation: Math.random() * Math.PI * 2,
-        vRotation: (Math.random() - 0.5) * 0.25,
-        tiltAngle: Math.random() * Math.PI,
-        vTilt: 0.08 + Math.random() * 0.12,
-        opacity: 1,
-        life: 0,
-        maxLife: 60 + Math.random() * 40,
-      });
-    }
-
-    // 3. Sparkle / glint stars
-    const numGlints = 16;
-    for (let i = 0; i < numGlints; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 2 + Math.random() * 5;
-      newParticles.push({
-        x: centerX + (Math.random() - 0.5) * rect.width,
-        y: centerY + (Math.random() - 0.5) * rect.height,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed - 2,
-        type: "glint",
-        color: "#ffffff",
-        width: 3 + Math.random() * 4,
-        height: 3 + Math.random() * 4,
-        rotation: 0,
-        vRotation: 0,
-        tiltAngle: 0,
-        vTilt: 0,
-        opacity: 1,
-        life: 0,
-        maxLife: 35 + Math.random() * 20,
-      });
-    }
-
-    particlesRef.current = newParticles;
-
-    // Start render loop if not running
-    if (!animFrameIdRef.current) {
-      renderLoop();
+    if (maxH > 0) {
+      setMaxHeight(maxH);
     }
   }, []);
 
-  // Particle Physics and Render Loop
+  useEffect(() => {
+    measureHeights();
+    window.addEventListener("resize", measureHeights);
+    return () => window.removeEventListener("resize", measureHeights);
+  }, [measureHeights, phrases]);
+
+  // Sync canvas dimensions with device pixel ratio
+  const syncCanvasSize = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const cRect = canvas.getBoundingClientRect();
+    if (cRect.width === 0 || cRect.height === 0) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.round(cRect.width * dpr);
+    canvas.height = Math.round(cRect.height * dpr);
+  }, []);
+
+  useEffect(() => {
+    syncCanvasSize();
+    window.addEventListener("resize", syncCanvasSize);
+    return () => window.removeEventListener("resize", syncCanvasSize);
+  }, [syncCanvasSize]);
+
+  // Render loop for rounded dot particles with explicit per-frame transform
   const renderLoop = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) {
@@ -180,88 +122,44 @@ export default function ShatterConfettiText({
       return;
     }
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cRect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    const activeParticles: Particle[] = [];
+    // Explicitly set transform per frame to avoid matrix accumulation bugs
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, cRect.width, cRect.height);
+
+    const activeParticles: DotParticle[] = [];
 
     for (let i = 0; i < particlesRef.current.length; i++) {
       const p = particlesRef.current[i];
       p.life++;
 
-      // Progress ratio (0 to 1)
       const progress = p.life / p.maxLife;
       if (progress >= 1) continue;
 
-      // Opacity fade in the second half of life
+      // Retain opacity for first 60% of lifespan, then smoothly fade out
       p.opacity = progress < 0.6 ? 1 : 1 - (progress - 0.6) / 0.4;
 
-      if (p.type === "shard") {
-        // Physics for shattered glass/text shards
-        p.vx *= 0.96;
-        p.vy = p.vy * 0.96 + 0.22; // gravity
-        p.x += p.vx;
-        p.y += p.vy;
-        p.rotation += p.vRotation;
+      // Gentle floating physics with air drag and soft gravity
+      p.vx *= 0.965;
+      p.vy = p.vy * 0.965 + 0.09; // Light gravity so dots float and drift
+      p.x += p.vx;
+      p.y += p.vy;
 
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rotation);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = Math.max(0, p.opacity);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = Math.max(0, p.opacity);
 
-        if (p.points && p.points.length >= 3) {
-          ctx.beginPath();
-          ctx.moveTo(p.points[0].x, p.points[0].y);
-          for (let k = 1; k < p.points.length; k++) {
-            ctx.lineTo(p.points[k].x, p.points[k].y);
-          }
-          ctx.closePath();
-          ctx.fill();
-        } else {
-          ctx.fillRect(-p.width / 2, -p.height / 2, p.width, p.height);
-        }
-        ctx.restore();
-      } else if (p.type === "confetti") {
-        // Physics for fluttering 3D confetti
-        p.vx *= 0.97;
-        p.vy = Math.min(p.vy * 0.97 + 0.16, 4.0); // terminal velocity + air friction
-        p.x += p.vx;
-        p.y += p.vy;
-        p.rotation += p.vRotation;
-        p.tiltAngle += p.vTilt;
-
-        // 3D paper flip oscillation width
-        const currentWidth = p.width * Math.cos(p.tiltAngle);
-
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rotation);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = Math.max(0, p.opacity);
-
-        // Draw fluttering ribbon/rect
-        ctx.fillRect(-Math.abs(currentWidth) / 2, -p.height / 2, Math.abs(currentWidth), p.height);
-
-        // Highlight sheen on flip
-        if (Math.abs(currentWidth) < p.width * 0.3) {
-          ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
-          ctx.fillRect(-Math.abs(currentWidth) / 2, -p.height / 2, Math.abs(currentWidth), p.height);
-        }
-        ctx.restore();
-      } else if (p.type === "glint") {
-        p.x += p.vx;
-        p.y += p.vy;
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.fillStyle = "#ffffff";
-        ctx.globalAlpha = Math.max(0, p.opacity * 0.85);
-        ctx.shadowColor = "#ffffff";
+      if (p.glow) {
+        ctx.shadowColor = p.color;
         ctx.shadowBlur = 6;
-        ctx.beginPath();
-        ctx.arc(0, 0, p.width / 2, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.restore();
       }
+
+      ctx.fill();
+      ctx.restore();
 
       activeParticles.push(p);
     }
@@ -271,116 +169,200 @@ export default function ShatterConfettiText({
     if (activeParticles.length > 0) {
       animFrameIdRef.current = requestAnimationFrame(renderLoop);
     } else {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, cRect.width, cRect.height);
       animFrameIdRef.current = null;
     }
   }, []);
 
-  // Sync canvas size with pixel ratio
-  const syncCanvasSize = useCallback(() => {
+  // Spawn visible rounded dots directly along the primary (blue) and secondary (orange) words
+  const spawnTextDots = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const parent = canvas.parentElement;
-    if (!parent) return;
 
-    const rect = parent.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-
-    const ctx = canvas.getContext("2d");
-    if (ctx) {
-      ctx.scale(dpr, dpr);
-    }
-  }, []);
-
-  useEffect(() => {
     syncCanvasSize();
-    window.addEventListener("resize", syncCanvasSize);
-    return () => {
-      window.removeEventListener("resize", syncCanvasSize);
-      if (animFrameIdRef.current) {
-        cancelAnimationFrame(animFrameIdRef.current);
+    const cRect = canvas.getBoundingClientRect();
+
+    const primaryEl = primarySpanRef.current;
+    const secondaryEl = secondarySpanRef.current;
+
+    const newParticles: DotParticle[] = [];
+
+    // Emit gentle rounded dots from an element's bounding box
+    const emitDotsFromElement = (
+      el: HTMLElement | null,
+      palette: string[],
+      dotCount: number
+    ) => {
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+
+      const elX = rect.left - cRect.left;
+      const elY = rect.top - cRect.top;
+      const elW = rect.width;
+      const elH = rect.height;
+      const centerX = elX + elW / 2;
+      const centerY = elY + elH / 2;
+
+      for (let i = 0; i < dotCount; i++) {
+        // Distribute starting positions along the text characters
+        const startX = elX + (Math.random() * 0.92 + 0.04) * elW;
+        const startY = elY + (Math.random() * 0.8 + 0.1) * elH;
+
+        // Radial angle outwards from the word center
+        const angle = Math.atan2(startY - centerY, startX - centerX) + (Math.random() - 0.5) * 0.7;
+        const speed = 2.0 + Math.random() * 4.5;
+
+        // Upward pop and soft outward float
+        const vx = Math.cos(angle) * speed + (Math.random() - 0.5) * 1.8;
+        const vy = Math.sin(angle) * speed * 0.65 - (1.8 + Math.random() * 3.5);
+
+        const color = palette[Math.floor(Math.random() * palette.length)];
+        const radius = 2.4 + Math.random() * 3.2; // Distinct, clearly visible rounded dot (2.4px to 5.6px)
+        const glow = Math.random() > 0.4;
+
+        newParticles.push({
+          x: startX,
+          y: startY,
+          vx,
+          vy,
+          radius,
+          color,
+          opacity: 1,
+          life: 0,
+          maxLife: 65 + Math.random() * 30, // ~1.1s to 1.6s of graceful float
+          glow,
+        });
       }
     };
-  }, [syncCanvasSize]);
 
-  // Main transition orchestrator
+    // Emit blue dots from the primary word (e.g. "Smart", "24/7 Digital", "Automated")
+    emitDotsFromElement(primaryEl, LOGO_BLUE_DOTS, 65);
+
+    // Emit orange dots from the secondary word (e.g. "Retail Assistant.", "Store Cashier.", "Commerce Engine.")
+    emitDotsFromElement(secondaryEl, LOGO_ORANGE_DOTS, 75);
+
+    particlesRef.current = newParticles;
+
+    if (!animFrameIdRef.current) {
+      renderLoop();
+    }
+  }, [syncCanvasSize, renderLoop]);
+
+  // Transition orchestrator using stable ref flag
+  const advanceTransition = useCallback(() => {
+    if (isAnimatingRef.current) return;
+    isAnimatingRef.current = true;
+
+    // 1. Text breaks apart into subtle rounded dots
+    setPhase("shattering");
+    spawnTextDots();
+
+    // 2. Advance to the next phrase and smoothly reveal
+    setTimeout(() => {
+      setCurrentIndex((prev) => (prev + 1) % phrases.length);
+      setPhase("entering");
+
+      setTimeout(() => {
+        setPhase("idle");
+        isAnimatingRef.current = false;
+      }, 700);
+    }, 240);
+  }, [phrases.length, spawnTextDots]);
+
+  // Stable recurring automatic interval
   useEffect(() => {
     if (phrases.length <= 1) return;
 
     const interval = setInterval(() => {
-      // 1. Trigger shatter & confetti explosion
-      setPhase("shattering");
-      spawnBurst();
-
-      // 2. Switch to next word and trigger smooth entrance
-      const switchTimer = setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % phrases.length);
-        setPhase("entering");
-
-        // 3. Return to idle
-        const idleTimer = setTimeout(() => {
-          setPhase("idle");
-        }, 700);
-
-        return () => clearTimeout(idleTimer);
-      }, 220);
-
-      return () => clearTimeout(switchTimer);
+      advanceTransition();
     }, intervalMs);
 
     return () => clearInterval(interval);
-  }, [phrases.length, intervalMs, spawnBurst]);
+  }, [phrases.length, intervalMs, advanceTransition]);
 
   const currentPhrase = phrases[currentIndex] || phrases[0];
 
   return (
     <span
       ref={containerRef}
-      className={`relative inline-flex items-center justify-center min-h-[1.25em] ${className}`}
-      style={{ perspective: "1000px" }}
+      onClick={advanceTransition}
+      title="Click to shatter"
+      className={`relative inline-flex flex-col items-center justify-center w-full select-none cursor-pointer ${className}`}
+      style={{
+        minHeight: maxHeight ? `${maxHeight}px` : "2.3em",
+        height: maxHeight ? `${maxHeight}px` : undefined,
+        transition: "height 250ms ease-out",
+      }}
     >
-      {/* Full-width particle canvas layer */}
+      {/* Hidden measurement probe inside valid span to pre-calculate maximum height across all phrases */}
+      <span
+        ref={probeRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 top-0 w-full opacity-0 -z-50 overflow-hidden block"
+        style={{ visibility: "hidden" }}
+      >
+        {phrases.map((phrase, idx) => (
+          <span key={idx} className="w-full text-center py-1 block">
+            <span className="font-black tracking-tight" style={{ color: LOGO_BLUE }}>
+              {phrase.primary}
+            </span>{" "}
+            <span className="font-black tracking-tight" style={{ color: LOGO_ORANGE }}>
+              {phrase.secondary}
+            </span>
+          </span>
+        ))}
+      </span>
+
+      {/* Particle Canvas Layer with high z-index and generous padding */}
       <canvas
         ref={canvasRef}
-        className="pointer-events-none absolute -inset-24 z-20 w-[calc(100%+12rem)] h-[calc(100%+12rem)]"
+        className="pointer-events-none absolute z-30"
         style={{
-          width: "calc(100% + 12rem)",
-          height: "calc(100% + 12rem)",
-          left: "-6rem",
-          top: "-6rem",
+          width: "calc(100% + 300px)",
+          height: "calc(100% + 220px)",
+          left: "-150px",
+          top: "-110px",
         }}
         aria-hidden="true"
       />
 
-      {/* Smoothly animated text content */}
+      {/* Main Animated Text Phrase */}
       <span
-        className="inline-block transition-all will-change-[transform,opacity,filter]"
+        className="inline-block text-center transition-all duration-300 will-change-[transform,opacity,filter]"
         style={{
           transform:
             phase === "shattering"
-              ? "scale(0.92) rotate(-1.5deg) translateY(-4px)"
+              ? "scale(0.96) translateY(-3px)"
               : phase === "entering"
-              ? "scale(1) rotate(0deg) translateY(0px)"
-              : "scale(1) rotate(0deg) translateY(0px)",
+              ? "scale(1) translateY(0px)"
+              : "scale(1) translateY(0px)",
           opacity: phase === "shattering" ? 0 : 1,
           filter:
             phase === "shattering"
-              ? "blur(6px)"
+              ? "blur(5px)"
               : phase === "entering"
               ? "blur(0px)"
               : "blur(0px)",
           transition:
             phase === "shattering"
-              ? "transform 220ms ease-in, opacity 200ms ease-in, filter 220ms ease-in"
-              : "transform 650ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms cubic-bezier(0.16, 1, 0.3, 1), filter 500ms ease-out",
+              ? "transform 200ms ease-out, opacity 180ms ease-out, filter 200ms ease-out"
+              : "transform 500ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), filter 400ms ease-out",
         }}
       >
-        <span className="text-primary font-black tracking-tight drop-shadow-sm">
+        {/* Primary Word in Exact Logo Blue */}
+        <span
+          ref={primarySpanRef}
+          className="inline-block font-black tracking-tight drop-shadow-sm"
+          style={{ color: LOGO_BLUE }}
+        >
           {currentPhrase.primary}
         </span>{" "}
-        <span className="text-secondary font-black tracking-tight drop-shadow-sm">
+        {/* Secondary Word in Exact Logo Orange */}
+        <span
+          ref={secondarySpanRef}
+          className="inline-block font-black tracking-tight drop-shadow-sm"
+          style={{ color: LOGO_ORANGE }}
+        >
           {currentPhrase.secondary}
         </span>
       </span>
