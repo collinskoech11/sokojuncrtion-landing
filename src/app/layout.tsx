@@ -91,11 +91,17 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/logo_min.jpeg", type: "image/jpeg" },
-      { url: "/favicon.ico" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+      { url: "/logo_square.png", type: "image/png" },
     ],
-    shortcut: "/logo_min.jpeg",
-    apple: "/logo_min.jpeg",
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/logo_square.png" },
+    ],
   },
 };
 
@@ -104,7 +110,7 @@ const jsonLdOrg = {
   "@type": "Organization",
   name: "SokoJunction",
   url: siteUrl,
-  logo: `${siteUrl}/logo_min.jpeg`,
+  logo: `${siteUrl}/logo_square.png`,
   description:
     "All-in-one eCommerce infrastructure platform empowering businesses and entrepreneurs to build, run, and scale online stores.",
   contactPoint: {
@@ -147,9 +153,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={fontSans.variable}>
       <head>
-        <link rel="icon" href="/logo_min.jpeg" type="image/jpeg" />
-        <link rel="shortcut icon" href="/logo_min.jpeg" type="image/jpeg" />
-        <link rel="apple-touch-icon" href="/logo_min.jpeg" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="icon" href="/favicon-16x16.png" type="image/png" sizes="16x16" />
+        <link rel="icon" href="/logo_square.png" type="image/png" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrg) }}

@@ -41,7 +41,7 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
             <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden shadow-sm border border-gray-100 bg-white transition-transform group-hover:scale-105 flex items-center justify-center flex-shrink-0">
               <Image
-                src="/sokojunction_no_bg_mini.jpeg"
+                src="/logo_square.png"
                 alt="SokoJunction Logo"
                 fill
                 className="object-contain p-0.5"

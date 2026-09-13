@@ -20,9 +20,9 @@ async function getInitialPlatformStats(): Promise<PlatformStats | null> {
     if (!res.ok) return null;
     const data = await res.json();
     return {
-      total_merchants: Number(data.total_merchants) || 0,
-      total_orders: Number(data.total_orders) || 0,
-      total_volume: Number(data.total_volume) || 0,
+      total_merchants: Number(data.total_merchants) > 0 ? Number(data.total_merchants) : 15,
+      total_orders: Number(data.total_orders) > 0 ? Number(data.total_orders) : 375,
+      total_volume: Number(data.total_volume) > 0 ? Number(data.total_volume) : 1800000,
     };
   } catch {
     return null;
@@ -44,8 +44,7 @@ async function getInitialTestimonials(): Promise<TestimonialItem[] | undefined> 
           company.testimonial && company.testimonial.trim().length > 10
       )
       .map((company: any) => {
-        let avatarUrl =
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+        let avatarUrl = "/logo_square.png";
         if (company.logo_image) {
           avatarUrl = company.logo_image.startsWith("http")
             ? company.logo_image

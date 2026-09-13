@@ -18,7 +18,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-3">
               <div className="relative w-10 h-10 rounded-xl overflow-hidden bg-white p-1">
                 <Image
-                  src="/sokojunction_no_bg_mini.jpeg"
+                  src="/logo_square.png"
                   alt="SokoJunction"
                   fill
                   className="object-contain"

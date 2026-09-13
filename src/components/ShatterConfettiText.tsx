@@ -30,21 +30,21 @@ interface ShatterConfettiTextProps {
 const LOGO_BLUE = "#35408F"; // rgb(53, 64, 143)
 const LOGO_ORANGE = "#EF5C2A"; // rgb(239, 92, 42)
 
-// Vibrant and subtle dot shades strictly derived from logo hues
+// Subtle and vibrant rounded dot shades strictly derived from logo hues
 const LOGO_BLUE_DOTS = [
   "#35408F", // Exact logo primary blue
-  "#4B5AB8", // Logo blue light highlight
-  "#252D66", // Logo blue deep navy
-  "#2563EB", // Bright royal blue
+  "#4350A5", // Vibrant blue accent
+  "#283273", // Deep navy blue
+  "#4F5EC7", // Bright royal blue
   "#5C6BC0", // Soft blue glow
 ];
 
 const LOGO_ORANGE_DOTS = [
   "#EF5C2A", // Exact logo secondary orange
-  "#F37B53", // Logo orange coral
-  "#C94517", // Logo orange deep rust
-  "#F97316", // Vivid bright orange
-  "#FF8A65", // Warm peach glow
+  "#F3784D", // Warm coral orange
+  "#D24816", // Deep amber rust
+  "#FA895E", // Vivid orange glow
+  "#FF9D7A", // Soft peach accent
 ];
 
 export default function ShatterConfettiText({
@@ -64,7 +64,6 @@ export default function ShatterConfettiText({
 
   const isAnimatingRef = useRef(false);
   const particlesRef = useRef<DotParticle[]>([]);
-  const animFrameIdRef = useRef<number | null>(null);
 
   // Measure all phrases in probe to lock container height permanently and eliminate layout shifts
   const measureHeights = useCallback(() => {
@@ -90,88 +89,76 @@ export default function ShatterConfettiText({
     return () => window.removeEventListener("resize", measureHeights);
   }, [measureHeights, phrases]);
 
-  // Sync canvas dimensions with device pixel ratio
-  const syncCanvasSize = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const cRect = canvas.getBoundingClientRect();
-    if (cRect.width === 0 || cRect.height === 0) return;
-
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(cRect.width * dpr);
-    canvas.height = Math.round(cRect.height * dpr);
-  }, []);
-
+  // Continuous, race-free animation render loop
   useEffect(() => {
-    syncCanvasSize();
-    window.addEventListener("resize", syncCanvasSize);
-    return () => window.removeEventListener("resize", syncCanvasSize);
-  }, [syncCanvasSize]);
+    let animId: number;
 
-  // Render loop for rounded dot particles with explicit per-frame transform
-  const renderLoop = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) {
-      animFrameIdRef.current = null;
-      return;
-    }
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      animFrameIdRef.current = null;
-      return;
-    }
+    const render = () => {
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          const cRect = canvas.getBoundingClientRect();
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          const targetW = Math.round(cRect.width * dpr);
+          const targetH = Math.round(cRect.height * dpr);
 
-    const cRect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+          // Automatically sync canvas buffer size to current element dimensions
+          if (cRect.width > 0 && cRect.height > 0) {
+            if (canvas.width !== targetW || canvas.height !== targetH) {
+              canvas.width = targetW;
+              canvas.height = targetH;
+            }
 
-    // Explicitly set transform per frame to avoid matrix accumulation bugs
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, cRect.width, cRect.height);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            ctx.clearRect(0, 0, cRect.width, cRect.height);
 
-    const activeParticles: DotParticle[] = [];
+            if (particlesRef.current.length > 0) {
+              const active: DotParticle[] = [];
 
-    for (let i = 0; i < particlesRef.current.length; i++) {
-      const p = particlesRef.current[i];
-      p.life++;
+              for (let i = 0; i < particlesRef.current.length; i++) {
+                const p = particlesRef.current[i];
+                p.life++;
 
-      const progress = p.life / p.maxLife;
-      if (progress >= 1) continue;
+                const progress = p.life / p.maxLife;
+                if (progress >= 1) continue;
 
-      // Retain opacity for first 60% of lifespan, then smoothly fade out
-      p.opacity = progress < 0.6 ? 1 : 1 - (progress - 0.6) / 0.4;
+                // Retain full opacity for first 65% of lifespan, then smoothly fade out
+                p.opacity = progress < 0.65 ? 1 : Math.max(0, 1 - (progress - 0.65) / 0.35);
 
-      // Gentle floating physics with air drag and soft gravity
-      p.vx *= 0.965;
-      p.vy = p.vy * 0.965 + 0.09; // Light gravity so dots float and drift
-      p.x += p.vx;
-      p.y += p.vy;
+                // Gentle floating physics with light air drag and soft gravity
+                p.vx *= 0.96;
+                p.vy = p.vy * 0.96 + 0.08;
+                p.x += p.vx;
+                p.y += p.vy;
 
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = Math.max(0, p.opacity);
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.globalAlpha = p.opacity;
 
-      if (p.glow) {
-        ctx.shadowColor = p.color;
-        ctx.shadowBlur = 6;
+                if (p.glow) {
+                  ctx.shadowColor = p.color;
+                  ctx.shadowBlur = 8;
+                }
+
+                ctx.fill();
+                ctx.restore();
+
+                active.push(p);
+              }
+
+              particlesRef.current = active;
+            }
+          }
+        }
       }
+      animId = requestAnimationFrame(render);
+    };
 
-      ctx.fill();
-      ctx.restore();
-
-      activeParticles.push(p);
-    }
-
-    particlesRef.current = activeParticles;
-
-    if (activeParticles.length > 0) {
-      animFrameIdRef.current = requestAnimationFrame(renderLoop);
-    } else {
-      ctx.clearRect(0, 0, cRect.width, cRect.height);
-      animFrameIdRef.current = null;
-    }
+    animId = requestAnimationFrame(render);
+    return () => cancelAnimationFrame(animId);
   }, []);
 
   // Spawn visible rounded dots directly along the primary (blue) and secondary (orange) words
@@ -179,46 +166,64 @@ export default function ShatterConfettiText({
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    syncCanvasSize();
     const cRect = canvas.getBoundingClientRect();
+    if (cRect.width === 0 || cRect.height === 0) return;
 
     const primaryEl = primarySpanRef.current;
     const secondaryEl = secondarySpanRef.current;
 
     const newParticles: DotParticle[] = [];
 
-    // Emit gentle rounded dots from an element's bounding box
     const emitDotsFromElement = (
       el: HTMLElement | null,
       palette: string[],
-      dotCount: number
+      dotCount: number,
+      fallbackRatioX: number
     ) => {
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
+      let elX: number;
+      let elY: number;
+      let elW: number;
+      let elH: number;
 
-      const elX = rect.left - cRect.left;
-      const elY = rect.top - cRect.top;
-      const elW = rect.width;
-      const elH = rect.height;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+          elX = rect.left - cRect.left;
+          elY = rect.top - cRect.top;
+          elW = rect.width;
+          elH = rect.height;
+        } else {
+          elW = cRect.width * 0.3;
+          elH = 40;
+          elX = cRect.width * fallbackRatioX - elW / 2;
+          elY = cRect.height / 2 - elH / 2;
+        }
+      } else {
+        elW = cRect.width * 0.3;
+        elH = 40;
+        elX = cRect.width * fallbackRatioX - elW / 2;
+        elY = cRect.height / 2 - elH / 2;
+      }
+
       const centerX = elX + elW / 2;
       const centerY = elY + elH / 2;
 
       for (let i = 0; i < dotCount; i++) {
         // Distribute starting positions along the text characters
-        const startX = elX + (Math.random() * 0.92 + 0.04) * elW;
+        const startX = elX + (Math.random() * 0.94 + 0.03) * elW;
         const startY = elY + (Math.random() * 0.8 + 0.1) * elH;
 
-        // Radial angle outwards from the word center
-        const angle = Math.atan2(startY - centerY, startX - centerX) + (Math.random() - 0.5) * 0.7;
-        const speed = 2.0 + Math.random() * 4.5;
+        // Radial angle outwards from word center
+        const angle = Math.atan2(startY - centerY, startX - centerX) + (Math.random() - 0.5) * 0.8;
+        const speed = 2.2 + Math.random() * 4.8;
 
-        // Upward pop and soft outward float
-        const vx = Math.cos(angle) * speed + (Math.random() - 0.5) * 1.8;
-        const vy = Math.sin(angle) * speed * 0.65 - (1.8 + Math.random() * 3.5);
+        // Upward pop and soft outward drift
+        const vx = Math.cos(angle) * speed + (Math.random() - 0.5) * 2;
+        const vy = Math.sin(angle) * speed * 0.6 - (2.2 + Math.random() * 3.8);
 
         const color = palette[Math.floor(Math.random() * palette.length)];
-        const radius = 2.4 + Math.random() * 3.2; // Distinct, clearly visible rounded dot (2.4px to 5.6px)
-        const glow = Math.random() > 0.4;
+        const radius = 3.0 + Math.random() * 3.5; // Clear rounded dots (3.0px to 6.5px)
+        const glow = Math.random() > 0.3;
 
         newParticles.push({
           x: startX,
@@ -229,24 +234,20 @@ export default function ShatterConfettiText({
           color,
           opacity: 1,
           life: 0,
-          maxLife: 65 + Math.random() * 30, // ~1.1s to 1.6s of graceful float
+          maxLife: 65 + Math.random() * 30, // ~1.2s to 1.6s of graceful float
           glow,
         });
       }
     };
 
-    // Emit blue dots from the primary word (e.g. "Smart", "24/7 Digital", "Automated")
-    emitDotsFromElement(primaryEl, LOGO_BLUE_DOTS, 65);
+    // Emit blue dots from primary word
+    emitDotsFromElement(primaryEl, LOGO_BLUE_DOTS, 55, 0.38);
 
-    // Emit orange dots from the secondary word (e.g. "Retail Assistant.", "Store Cashier.", "Commerce Engine.")
-    emitDotsFromElement(secondaryEl, LOGO_ORANGE_DOTS, 75);
+    // Emit orange dots from secondary word
+    emitDotsFromElement(secondaryEl, LOGO_ORANGE_DOTS, 65, 0.62);
 
     particlesRef.current = newParticles;
-
-    if (!animFrameIdRef.current) {
-      renderLoop();
-    }
-  }, [syncCanvasSize, renderLoop]);
+  }, []);
 
   // Transition orchestrator using stable ref flag
   const advanceTransition = useCallback(() => {
@@ -265,8 +266,8 @@ export default function ShatterConfettiText({
       setTimeout(() => {
         setPhase("idle");
         isAnimatingRef.current = false;
-      }, 700);
-    }, 240);
+      }, 650);
+    }, 220);
   }, [phrases.length, spawnTextDots]);
 
   // Stable recurring automatic interval
@@ -289,12 +290,12 @@ export default function ShatterConfettiText({
       title="Click to shatter"
       className={`relative inline-flex flex-col items-center justify-center w-full select-none cursor-pointer ${className}`}
       style={{
-        minHeight: maxHeight ? `${maxHeight}px` : "2.3em",
+        minHeight: maxHeight ? `${maxHeight}px` : "2.4em",
         height: maxHeight ? `${maxHeight}px` : undefined,
         transition: "height 250ms ease-out",
       }}
     >
-      {/* Hidden measurement probe inside valid span to pre-calculate maximum height across all phrases */}
+      {/* Hidden measurement probe to pre-calculate maximum height across all phrases */}
       <span
         ref={probeRef}
         aria-hidden="true"
@@ -313,16 +314,10 @@ export default function ShatterConfettiText({
         ))}
       </span>
 
-      {/* Particle Canvas Layer with high z-index and generous padding */}
+      {/* Particle Canvas Layer covering the text area with generous bleed */}
       <canvas
         ref={canvasRef}
-        className="pointer-events-none absolute z-30"
-        style={{
-          width: "calc(100% + 300px)",
-          height: "calc(100% + 220px)",
-          left: "-150px",
-          top: "-110px",
-        }}
+        className="pointer-events-none absolute -inset-y-16 -inset-x-12 w-[calc(100%+6rem)] h-[calc(100%+8rem)] z-30"
         aria-hidden="true"
       />
 
@@ -332,7 +327,7 @@ export default function ShatterConfettiText({
         style={{
           transform:
             phase === "shattering"
-              ? "scale(0.96) translateY(-3px)"
+              ? "scale(0.96) translateY(-4px)"
               : phase === "entering"
               ? "scale(1) translateY(0px)"
               : "scale(1) translateY(0px)",

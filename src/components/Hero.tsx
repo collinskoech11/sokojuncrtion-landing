@@ -27,16 +27,23 @@ interface AnimatedCounterProps {
   formatFn?: (val: number) => string;
 }
 
+const DEFAULT_PLATFORM_STATS: PlatformStats = {
+  total_merchants: 15,
+  total_orders: 375,
+  total_volume: 1800000,
+};
+
 const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
   endValue,
-  duration = 1800,
+  duration = 1600,
   formatFn,
 }) => {
-  const [count, setCount] = useState(0);
+  const safeEndValue = endValue > 0 ? endValue : 1;
+  const [count, setCount] = useState(() => Math.floor(safeEndValue * 0.15));
 
   useEffect(() => {
     let startTimestamp: number | null = null;
-    const startVal = 0;
+    const startVal = Math.floor(safeEndValue * 0.15);
 
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
@@ -44,19 +51,19 @@ const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
       const progress = Math.min(elapsed / duration, 1);
       // Smooth ease-out quad curve
       const easeOutQuad = (t: number) => t * (2 - t);
-      const currentVal = Math.floor(startVal + easeOutQuad(progress) * (endValue - startVal));
+      const currentVal = Math.floor(startVal + easeOutQuad(progress) * (safeEndValue - startVal));
       setCount(currentVal);
 
       if (progress < 1) {
         requestAnimationFrame(step);
       } else {
-        setCount(endValue);
+        setCount(safeEndValue);
       }
     };
 
     const frameId = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frameId);
-  }, [endValue, duration]);
+  }, [safeEndValue, duration]);
 
   return <>{formatFn ? formatFn(count) : `${count.toLocaleString()}+`}</>;
 };
@@ -68,13 +75,12 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
     { primary: "Automated", secondary: "Commerce Engine." },
   ];
 
-  const [stats, setStats] = useState<PlatformStats>(
-    initialStats || {
-      total_merchants: 15,
-      total_orders: 375,
-      total_volume: 1800000,
+  const [stats, setStats] = useState<PlatformStats>(() => {
+    if (initialStats && initialStats.total_merchants > 0) {
+      return initialStats;
     }
-  );
+    return DEFAULT_PLATFORM_STATS;
+  });
 
   const [isMounted, setIsMounted] = useState(false);
   const [activeStars, setActiveStars] = useState<ShootingStarItem[]>([]);
@@ -92,10 +98,13 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
         if (res.ok) {
           const data = await res.json();
           if (mounted && data) {
+            const merchants = Number(data.total_merchants);
+            const orders = Number(data.total_orders);
+            const volume = Number(data.total_volume);
             setStats({
-              total_merchants: Number(data.total_merchants) || 0,
-              total_orders: Number(data.total_orders) || 0,
-              total_volume: Number(data.total_volume) || 0,
+              total_merchants: merchants > 0 ? merchants : DEFAULT_PLATFORM_STATS.total_merchants,
+              total_orders: orders > 0 ? orders : DEFAULT_PLATFORM_STATS.total_orders,
+              total_volume: volume > 0 ? volume : DEFAULT_PLATFORM_STATS.total_volume,
             });
           }
         }
@@ -191,6 +200,9 @@ export default function Hero({ initialStats }: { initialStats?: PlatformStats | 
 
   // Currency rule: The currency for this project is always Kes.
   const formatVolume = (val: number) => {
+    if (val <= 0) {
+      return "Kes 1.8M+";
+    }
     if (val >= 1.0e9) {
       return `Kes ${(val / 1.0e9).toFixed(1).replace(/\.0$/, "")}B+`;
     }

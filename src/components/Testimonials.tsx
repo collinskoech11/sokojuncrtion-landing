@@ -43,7 +43,7 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     quote:
       "SokoJunction transformed our retail operations. It takes orders at midnight, triggers M-Pesa STK prompts automatically, and verifies payments instantly. It has eliminated manual payment reconciliation and saved us hours of daily admin work.",
     rating: 5,
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+    avatar: "https://res.cloudinary.com/dqokryv6u/image/upload/v1787170364/merjhiiaft4bmdgelh9x.png",
     shopUrl: "https://www.cupcoutureshop.com",
   },
   {
@@ -57,13 +57,13 @@ const DEFAULT_TESTIMONIALS: TestimonialItem[] = [
     shopUrl: "#",
   },
   {
-    id: 30,
-    name: "Savannah Artisans",
-    role: "Handmade Crafts & Gifts",
+    id: 9,
+    name: "Luna Living",
+    role: "Home Decor & Lifestyle",
     quote:
-      "The mobile storefront looks incredibly premium on phones. Our conversion rate jumped significantly after switching to SokoJunction. Very fast and easy for customers to buy.",
+      "The mobile storefront looks incredibly premium on phones. SokoJunction acts like our digital storefront manager and checkout assistant. Conversion rate jumped significantly after switching.",
     rating: 5,
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+    avatar: "https://res.cloudinary.com/dqokryv6u/image/upload/v1752660741/chykxcnsws9gernuidcp.jpg",
     shopUrl: "#",
   },
 ];
@@ -118,8 +118,7 @@ export default function Testimonials({
               company.testimonial && company.testimonial.trim().length > 10
           )
           .map((company: any) => {
-            let avatarUrl =
-              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80";
+            let avatarUrl = "/logo_square.png";
             if (company.logo_image) {
               avatarUrl = company.logo_image.startsWith("http")
                 ? company.logo_image
