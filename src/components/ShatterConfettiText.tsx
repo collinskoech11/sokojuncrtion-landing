@@ -24,6 +24,8 @@ interface ShatterConfettiTextProps {
   phrases: WordPhrase[];
   intervalMs?: number;
   className?: string;
+  minDotRadius?: number;
+  maxDotRadius?: number;
 }
 
 // Exact Blue and Orange colors sampled directly from SokoJunction Logo (logo_min.jpeg)
@@ -51,6 +53,8 @@ export default function ShatterConfettiText({
   phrases,
   intervalMs = 4000,
   className = "",
+  minDotRadius = 1.2,
+  maxDotRadius = 2.4,
 }: ShatterConfettiTextProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [phase, setPhase] = useState<"idle" | "shattering" | "entering">("idle");
@@ -128,7 +132,7 @@ export default function ShatterConfettiText({
 
                 // Gentle floating physics with light air drag and soft gravity
                 p.vx *= 0.96;
-                p.vy = p.vy * 0.96 + 0.08;
+                p.vy = p.vy * 0.96 + 0.06;
                 p.x += p.vx;
                 p.y += p.vy;
 
@@ -140,7 +144,7 @@ export default function ShatterConfettiText({
 
                 if (p.glow) {
                   ctx.shadowColor = p.color;
-                  ctx.shadowBlur = 8;
+                  ctx.shadowBlur = Math.max(2, Math.round(p.radius * 2));
                 }
 
                 ctx.fill();
@@ -222,7 +226,7 @@ export default function ShatterConfettiText({
         const vy = Math.sin(angle) * speed * 0.6 - (2.2 + Math.random() * 3.8);
 
         const color = palette[Math.floor(Math.random() * palette.length)];
-        const radius = 3.0 + Math.random() * 3.5; // Clear rounded dots (3.0px to 6.5px)
+        const radius = minDotRadius + Math.random() * (maxDotRadius - minDotRadius); // Subtle, smaller rounded dots (1.2px to 2.4px)
         const glow = Math.random() > 0.3;
 
         newParticles.push({
@@ -247,7 +251,7 @@ export default function ShatterConfettiText({
     emitDotsFromElement(secondaryEl, LOGO_ORANGE_DOTS, 65, 0.62);
 
     particlesRef.current = newParticles;
-  }, []);
+  }, [minDotRadius, maxDotRadius]);
 
   // Transition orchestrator using stable ref flag
   const advanceTransition = useCallback(() => {
