@@ -48,7 +48,7 @@ export default function Features() {
   ];
 
   return (
-    <section id="features" className="py-20 md:py-28 bg-white border-y border-gray-100">
+    <section id="features" className="relative py-20 md:py-28 bg-transparent border-y border-gray-200/50 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
@@ -68,7 +68,7 @@ export default function Features() {
             return (
               <div
                 key={idx}
-                className="group relative p-8 rounded-3xl bg-[#f8f9fc] border border-gray-100 hover:border-primary/30 hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 flex flex-col justify-between"
+                className="group relative p-8 rounded-3xl bg-white/90 backdrop-blur-md border border-gray-200/80 hover:border-primary/30 hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 flex flex-col justify-between shadow-sm"
               >
                 <div>
                   <div className="flex items-center justify-between mb-6">

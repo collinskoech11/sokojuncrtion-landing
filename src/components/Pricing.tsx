@@ -81,7 +81,7 @@ export default function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="py-20 md:py-32 bg-white border-y border-gray-100">
+    <section id="pricing" className="relative py-20 md:py-32 bg-transparent border-y border-gray-200/50 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
@@ -101,7 +101,7 @@ export default function Pricing() {
               className={`relative rounded-3xl p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 ${
                 plan.popular
                   ? "bg-white border-2 border-primary shadow-2xl shadow-primary/15 md:-translate-y-4 ring-4 ring-primary/5"
-                  : "bg-[#f8f9fc] border border-gray-200/80 hover:border-primary/40 hover:shadow-lg"
+                  : "bg-white/90 backdrop-blur-md border border-gray-200/80 hover:border-primary/40 hover:shadow-lg shadow-sm"
               }`}
             >
               <div>

@@ -202,7 +202,7 @@ export default function Testimonials({
   };
 
   return (
-    <section id="testimonials" className="py-20 md:py-32 bg-white border-y border-gray-100 overflow-hidden">
+    <section id="testimonials" className="relative py-20 md:py-32 bg-transparent border-y border-gray-200/50 overflow-hidden z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header with Navigation Controls */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
@@ -257,7 +257,7 @@ export default function Testimonials({
                 style={{ width: `${100 / visibleCount}%` }}
                 className="flex-shrink-0 px-3 md:px-4"
               >
-                <div className="h-full p-8 sm:p-9 rounded-3xl bg-[#f8f9fc] border border-gray-200/80 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 flex flex-col justify-between">
+                <div className="h-full p-8 sm:p-9 rounded-3xl bg-white/90 backdrop-blur-md border border-gray-200/80 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 flex flex-col justify-between shadow-sm">
                   <div>
                     <Quote className="w-10 h-10 text-primary/15 mb-4" />
 

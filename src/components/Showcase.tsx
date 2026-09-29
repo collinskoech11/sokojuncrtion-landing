@@ -56,7 +56,7 @@ export default function Showcase() {
   const [item3Ref, item3Visible] = useScrollReveal(0.15);
 
   return (
-    <section id="showcase" className="relative py-24 md:py-36 bg-[#f8f8f8] overflow-hidden">
+    <section id="showcase" className="relative py-24 md:py-36 bg-transparent overflow-hidden z-10">
       {/* Subtle Background Glow Orbs */}
       <div
         className="absolute top-1/4 -left-48 w-96 h-96 rounded-full bg-primary/5 blur-3xl pointer-events-none -z-10"

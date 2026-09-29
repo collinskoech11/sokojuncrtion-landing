@@ -68,6 +68,8 @@ export default function ShatterConfettiText({
 
   const isAnimatingRef = useRef(false);
   const particlesRef = useRef<DotParticle[]>([]);
+  const animIdRef = useRef<number | null>(null);
+  const dimensionsRef = useRef<{ w: number; h: number; dpr: number }>({ w: 0, h: 0, dpr: 1 });
 
   // Measure all phrases in probe to lock container height permanently and eliminate layout shifts
   const measureHeights = useCallback(() => {
@@ -87,82 +89,117 @@ export default function ShatterConfettiText({
     }
   }, []);
 
+  const updateCanvasDimensions = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const cRect = canvas.getBoundingClientRect();
+    if (cRect.width > 0 && cRect.height > 0) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      dimensionsRef.current = { w: cRect.width, h: cRect.height, dpr };
+      const targetW = Math.round(cRect.width * dpr);
+      const targetH = Math.round(cRect.height * dpr);
+      if (canvas.width !== targetW || canvas.height !== targetH) {
+        canvas.width = targetW;
+        canvas.height = targetH;
+      }
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     measureHeights();
-    window.addEventListener("resize", measureHeights);
-    return () => window.removeEventListener("resize", measureHeights);
-  }, [measureHeights, phrases]);
+    updateCanvasDimensions();
+    const onResize = () => {
+      measureHeights();
+      updateCanvasDimensions();
+    };
+    window.addEventListener("resize", onResize, { passive: true });
+    return () => window.removeEventListener("resize", onResize);
+  }, [measureHeights, updateCanvasDimensions, phrases]);
 
-  // Continuous, race-free animation render loop
-  useEffect(() => {
-    let animId: number;
+  // On-demand animation loop (sleeps when idle to save CPU and battery)
+  const startRenderLoop = useCallback(() => {
+    if (animIdRef.current) return;
 
     const render = () => {
       const canvas = canvasRef.current;
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          const cRect = canvas.getBoundingClientRect();
-          const dpr = Math.min(window.devicePixelRatio || 1, 2);
-          const targetW = Math.round(cRect.width * dpr);
-          const targetH = Math.round(cRect.height * dpr);
-
-          // Automatically sync canvas buffer size to current element dimensions
-          if (cRect.width > 0 && cRect.height > 0) {
-            if (canvas.width !== targetW || canvas.height !== targetH) {
-              canvas.width = targetW;
-              canvas.height = targetH;
-            }
-
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            ctx.clearRect(0, 0, cRect.width, cRect.height);
-
-            if (particlesRef.current.length > 0) {
-              const active: DotParticle[] = [];
-
-              for (let i = 0; i < particlesRef.current.length; i++) {
-                const p = particlesRef.current[i];
-                p.life++;
-
-                const progress = p.life / p.maxLife;
-                if (progress >= 1) continue;
-
-                // Retain full opacity for first 65% of lifespan, then smoothly fade out
-                p.opacity = progress < 0.65 ? 1 : Math.max(0, 1 - (progress - 0.65) / 0.35);
-
-                // Gentle floating physics with light air drag and soft gravity
-                p.vx *= 0.96;
-                p.vy = p.vy * 0.96 + 0.06;
-                p.x += p.vx;
-                p.y += p.vy;
-
-                ctx.save();
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = p.opacity;
-
-                if (p.glow) {
-                  ctx.shadowColor = p.color;
-                  ctx.shadowBlur = Math.max(2, Math.round(p.radius * 2));
-                }
-
-                ctx.fill();
-                ctx.restore();
-
-                active.push(p);
-              }
-
-              particlesRef.current = active;
-            }
-          }
-        }
+      if (!canvas) {
+        animIdRef.current = null;
+        return;
       }
-      animId = requestAnimationFrame(render);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) {
+        animIdRef.current = null;
+        return;
+      }
+
+      const { w, h } = dimensionsRef.current;
+      if (w === 0 || h === 0) {
+        animIdRef.current = null;
+        return;
+      }
+
+      ctx.clearRect(0, 0, w, h);
+
+      const particles = particlesRef.current;
+      if (particles.length === 0) {
+        // Stop RAF loop when no particles remain!
+        animIdRef.current = null;
+        return;
+      }
+
+      let writeIdx = 0;
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.life++;
+
+        const progress = p.life / p.maxLife;
+        if (progress >= 1) continue;
+
+        // Retain full opacity for first 65% of lifespan, then smoothly fade out
+        p.opacity = progress < 0.65 ? 1 : Math.max(0, 1 - (progress - 0.65) / 0.35);
+
+        // Gentle floating physics with light air drag and soft gravity
+        p.vx *= 0.96;
+        p.vy = p.vy * 0.96 + 0.06;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = p.color;
+        if (p.glow) {
+          ctx.shadowColor = p.color;
+          ctx.shadowBlur = Math.max(2, Math.round(p.radius * 2));
+        } else {
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        particles[writeIdx++] = p;
+      }
+
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+      particles.length = writeIdx;
+
+      animIdRef.current = requestAnimationFrame(render);
     };
 
-    animId = requestAnimationFrame(render);
-    return () => cancelAnimationFrame(animId);
+    animIdRef.current = requestAnimationFrame(render);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (animIdRef.current) {
+        cancelAnimationFrame(animIdRef.current);
+      }
+    };
   }, []);
 
   // Spawn visible rounded dots directly along the primary (blue) and secondary (orange) words
@@ -251,7 +288,8 @@ export default function ShatterConfettiText({
     emitDotsFromElement(secondaryEl, LOGO_ORANGE_DOTS, 65, 0.62);
 
     particlesRef.current = newParticles;
-  }, [minDotRadius, maxDotRadius]);
+    startRenderLoop();
+  }, [minDotRadius, maxDotRadius, startRenderLoop]);
 
   // Transition orchestrator using stable ref flag
   const advanceTransition = useCallback(() => {

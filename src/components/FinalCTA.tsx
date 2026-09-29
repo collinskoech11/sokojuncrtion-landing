@@ -5,7 +5,7 @@ import { FX_LINKS } from "@/lib/constants";
 export default function FinalCTA() {
 
   return (
-    <section className="py-20 md:py-28 bg-white">
+    <section className="relative py-20 md:py-28 bg-transparent z-10">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative rounded-3xl p-10 sm:p-16 md:p-20 gradient-cta-bg text-white text-center shadow-2xl shadow-primary/30 overflow-hidden">
           {/* Decorative blur backdrop circles */}

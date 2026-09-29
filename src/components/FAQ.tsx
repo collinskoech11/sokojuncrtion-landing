@@ -62,7 +62,7 @@ export default function FAQ() {
   };
 
   return (
-    <section id="faq" className="py-20 md:py-32 bg-[#f8f8f8]">
+    <section id="faq" className="relative py-20 md:py-32 bg-transparent z-10">
       {/* JSON-LD Schema for Google Rich Snippets */}
       <script
         type="application/ld+json"

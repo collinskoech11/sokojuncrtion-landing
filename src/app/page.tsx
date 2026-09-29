@@ -7,6 +7,7 @@ import Testimonials, { TestimonialItem } from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
 import FinalCTA from "@/components/FinalCTA";
+import CursorMotionBackground from "@/components/CursorMotionBackground";
 import { BACKEND_URL, FX_LINKS } from "@/lib/constants";
 
 export const dynamic = "force-static";
@@ -77,7 +78,8 @@ export default async function Home() {
   ]);
 
   return (
-    <>
+    <div className="relative">
+      <CursorMotionBackground />
       <Hero initialStats={stats} />
       <Features />
       <Showcase />
@@ -86,6 +88,6 @@ export default async function Home() {
       <FAQ />
       <Contact />
       <FinalCTA />
-    </>
+    </div>
   );
 }
