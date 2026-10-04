@@ -96,8 +96,10 @@ export default function CursorMotionBackground() {
     // --- Pre-render Sprites (Offscreen Canvases) ---
     // Zero runtime gradient allocation during the 60fps render loop
     const createSprites = (): PreRenderedSprites => {
-      const HEAD_SIZE = 36;
-      const TAIL_WIDTH = 3.5;
+      const HEAD_SIZE = 20;
+      const TAIL_WIDTH = 1.4;
+      const SPRITE_THICKNESS = 10;
+      const HALF_THICKNESS = 5;
 
       const heads: HTMLCanvasElement[] = [];
       const tailsRight: HTMLCanvasElement[] = [];
@@ -106,129 +108,129 @@ export default function CursorMotionBackground() {
       const tailsUp: HTMLCanvasElement[] = [];
 
       BRAND_COLORS.forEach(({ hex, rgb: [r, g, b] }) => {
-        // A. Head Sprite (36x36)
+        // A. Head Sprite (20x20) - Compact, refined luminous core
         const hCanvas = document.createElement("canvas");
         hCanvas.width = HEAD_SIZE;
         hCanvas.height = HEAD_SIZE;
         const hCtx = hCanvas.getContext("2d")!;
         const center = HEAD_SIZE / 2;
 
-        // Outer halo
-        const glowGrad = hCtx.createRadialGradient(center, center, 0, center, center, 16);
-        glowGrad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.88)`);
-        glowGrad.addColorStop(0.45, `rgba(${r}, ${g}, ${b}, 0.3)`);
+        // Outer soft halo
+        const glowGrad = hCtx.createRadialGradient(center, center, 0, center, center, 8);
+        glowGrad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.7)`);
+        glowGrad.addColorStop(0.45, `rgba(${r}, ${g}, ${b}, 0.2)`);
         glowGrad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
         hCtx.fillStyle = glowGrad;
         hCtx.beginPath();
-        hCtx.arc(center, center, 16, 0, Math.PI * 2);
+        hCtx.arc(center, center, 8, 0, Math.PI * 2);
         hCtx.fill();
 
         // Intense inner halo
-        const innerGrad = hCtx.createRadialGradient(center, center, 0, center, center, 6.5);
+        const innerGrad = hCtx.createRadialGradient(center, center, 0, center, center, 3.5);
         innerGrad.addColorStop(0, "#ffffff");
-        innerGrad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.95)`);
+        innerGrad.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, 0.8)`);
         innerGrad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
         hCtx.fillStyle = innerGrad;
         hCtx.beginPath();
-        hCtx.arc(center, center, 6.5, 0, Math.PI * 2);
+        hCtx.arc(center, center, 3.5, 0, Math.PI * 2);
         hCtx.fill();
 
-        // Incandescent core
+        // Incandescent pinpoint core
         hCtx.fillStyle = "#ffffff";
         hCtx.beginPath();
-        hCtx.arc(center, center, 2.8, 0, Math.PI * 2);
+        hCtx.arc(center, center, 1.4, 0, Math.PI * 2);
         hCtx.fill();
         heads.push(hCanvas);
 
-        // B. Tail Sprite - Right (MAX_TAIL x 16)
+        // B. Tail Sprite - Right (MAX_TAIL x 10) - Sleek 1.4px laser streak
         const trCanvas = document.createElement("canvas");
         trCanvas.width = MAX_TAIL;
-        trCanvas.height = 16;
+        trCanvas.height = SPRITE_THICKNESS;
         const trCtx = trCanvas.getContext("2d")!;
         const trGrad = trCtx.createLinearGradient(0, 0, MAX_TAIL, 0);
         trGrad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0)`);
-        trGrad.addColorStop(0.3, `rgba(${r}, ${g}, ${b}, 0.12)`);
-        trGrad.addColorStop(0.68, `rgba(${r}, ${g}, ${b}, 0.55)`);
-        trGrad.addColorStop(0.9, `rgba(${r}, ${g}, ${b}, 0.9)`);
-        trGrad.addColorStop(1, "rgba(255, 255, 255, 0.98)");
+        trGrad.addColorStop(0.3, `rgba(${r}, ${g}, ${b}, 0.08)`);
+        trGrad.addColorStop(0.68, `rgba(${r}, ${g}, ${b}, 0.45)`);
+        trGrad.addColorStop(0.9, `rgba(${r}, ${g}, ${b}, 0.8)`);
+        trGrad.addColorStop(1, "rgba(255, 255, 255, 0.95)");
 
         trCtx.strokeStyle = trGrad;
         trCtx.lineWidth = TAIL_WIDTH;
         trCtx.lineCap = "round";
         trCtx.shadowColor = hex;
-        trCtx.shadowBlur = 7;
+        trCtx.shadowBlur = 3;
         trCtx.beginPath();
-        trCtx.moveTo(2, 8);
-        trCtx.lineTo(MAX_TAIL - 2, 8);
+        trCtx.moveTo(2, HALF_THICKNESS);
+        trCtx.lineTo(MAX_TAIL - 2, HALF_THICKNESS);
         trCtx.stroke();
         tailsRight.push(trCanvas);
 
-        // C. Tail Sprite - Left (MAX_TAIL x 16)
+        // C. Tail Sprite - Left (MAX_TAIL x 10)
         const tlCanvas = document.createElement("canvas");
         tlCanvas.width = MAX_TAIL;
-        tlCanvas.height = 16;
+        tlCanvas.height = SPRITE_THICKNESS;
         const tlCtx = tlCanvas.getContext("2d")!;
         const tlGrad = tlCtx.createLinearGradient(0, 0, MAX_TAIL, 0);
-        tlGrad.addColorStop(0, "rgba(255, 255, 255, 0.98)");
-        tlGrad.addColorStop(0.1, `rgba(${r}, ${g}, ${b}, 0.9)`);
-        tlGrad.addColorStop(0.32, `rgba(${r}, ${g}, ${b}, 0.55)`);
-        tlGrad.addColorStop(0.7, `rgba(${r}, ${g}, ${b}, 0.12)`);
+        tlGrad.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+        tlGrad.addColorStop(0.1, `rgba(${r}, ${g}, ${b}, 0.8)`);
+        tlGrad.addColorStop(0.32, `rgba(${r}, ${g}, ${b}, 0.45)`);
+        tlGrad.addColorStop(0.7, `rgba(${r}, ${g}, ${b}, 0.08)`);
         tlGrad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
 
         tlCtx.strokeStyle = tlGrad;
         tlCtx.lineWidth = TAIL_WIDTH;
         tlCtx.lineCap = "round";
         tlCtx.shadowColor = hex;
-        tlCtx.shadowBlur = 7;
+        tlCtx.shadowBlur = 3;
         tlCtx.beginPath();
-        tlCtx.moveTo(2, 8);
-        tlCtx.lineTo(MAX_TAIL - 2, 8);
+        tlCtx.moveTo(2, HALF_THICKNESS);
+        tlCtx.lineTo(MAX_TAIL - 2, HALF_THICKNESS);
         tlCtx.stroke();
         tailsLeft.push(tlCanvas);
 
-        // D. Tail Sprite - Down (16 x MAX_TAIL)
+        // D. Tail Sprite - Down (10 x MAX_TAIL)
         const tdCanvas = document.createElement("canvas");
-        tdCanvas.width = 16;
+        tdCanvas.width = SPRITE_THICKNESS;
         tdCanvas.height = MAX_TAIL;
         const tdCtx = tdCanvas.getContext("2d")!;
         const tdGrad = tdCtx.createLinearGradient(0, 0, 0, MAX_TAIL);
         tdGrad.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0)`);
-        tdGrad.addColorStop(0.3, `rgba(${r}, ${g}, ${b}, 0.12)`);
-        tdGrad.addColorStop(0.68, `rgba(${r}, ${g}, ${b}, 0.55)`);
-        tdGrad.addColorStop(0.9, `rgba(${r}, ${g}, ${b}, 0.9)`);
-        tdGrad.addColorStop(1, "rgba(255, 255, 255, 0.98)");
+        tdGrad.addColorStop(0.3, `rgba(${r}, ${g}, ${b}, 0.08)`);
+        tdGrad.addColorStop(0.68, `rgba(${r}, ${g}, ${b}, 0.45)`);
+        tdGrad.addColorStop(0.9, `rgba(${r}, ${g}, ${b}, 0.8)`);
+        tdGrad.addColorStop(1, "rgba(255, 255, 255, 0.95)");
 
         tdCtx.strokeStyle = tdGrad;
         tdCtx.lineWidth = TAIL_WIDTH;
         tdCtx.lineCap = "round";
         tdCtx.shadowColor = hex;
-        tdCtx.shadowBlur = 7;
+        tdCtx.shadowBlur = 3;
         tdCtx.beginPath();
-        tdCtx.moveTo(8, 2);
-        tdCtx.lineTo(8, MAX_TAIL - 2);
+        tdCtx.moveTo(HALF_THICKNESS, 2);
+        tdCtx.lineTo(HALF_THICKNESS, MAX_TAIL - 2);
         tdCtx.stroke();
         tailsDown.push(tdCanvas);
 
-        // E. Tail Sprite - Up (16 x MAX_TAIL)
+        // E. Tail Sprite - Up (10 x MAX_TAIL)
         const tuCanvas = document.createElement("canvas");
-        tuCanvas.width = 16;
+        tuCanvas.width = SPRITE_THICKNESS;
         tuCanvas.height = MAX_TAIL;
         const tuCtx = tuCanvas.getContext("2d")!;
         const tuGrad = tuCtx.createLinearGradient(0, 0, 0, MAX_TAIL);
-        tuGrad.addColorStop(0, "rgba(255, 255, 255, 0.98)");
-        tuGrad.addColorStop(0.1, `rgba(${r}, ${g}, ${b}, 0.9)`);
-        tuGrad.addColorStop(0.32, `rgba(${r}, ${g}, ${b}, 0.55)`);
-        tuGrad.addColorStop(0.7, `rgba(${r}, ${g}, ${b}, 0.12)`);
+        tuGrad.addColorStop(0, "rgba(255, 255, 255, 0.95)");
+        tuGrad.addColorStop(0.1, `rgba(${r}, ${g}, ${b}, 0.8)`);
+        tuGrad.addColorStop(0.32, `rgba(${r}, ${g}, ${b}, 0.45)`);
+        tuGrad.addColorStop(0.7, `rgba(${r}, ${g}, ${b}, 0.08)`);
         tuGrad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
 
         tuCtx.strokeStyle = tuGrad;
         tuCtx.lineWidth = TAIL_WIDTH;
         tuCtx.lineCap = "round";
         tuCtx.shadowColor = hex;
-        tuCtx.shadowBlur = 7;
+        tuCtx.shadowBlur = 3;
         tuCtx.beginPath();
-        tuCtx.moveTo(8, 2);
-        tuCtx.lineTo(8, MAX_TAIL - 2);
+        tuCtx.moveTo(HALF_THICKNESS, 2);
+        tuCtx.lineTo(HALF_THICKNESS, MAX_TAIL - 2);
         tuCtx.stroke();
         tailsUp.push(tuCanvas);
       });
@@ -482,13 +484,13 @@ export default function CursorMotionBackground() {
             MAX_TAIL - intTail,
             0,
             intTail,
-            16,
+            10,
             intPos - intTail,
-            intTrack - 8,
+            intTrack - 5,
             intTail,
-            16
+            10
           );
-          ctx.drawImage(headSprite, intPos - 18, intTrack - 18);
+          ctx.drawImage(headSprite, intPos - 10, intTrack - 10);
         } else if (s.direction === "left") {
           const tailSprite = sprites.tailsLeft[colorIdx];
           ctx.drawImage(
@@ -496,41 +498,41 @@ export default function CursorMotionBackground() {
             0,
             0,
             intTail,
-            16,
+            10,
             intPos,
-            intTrack - 8,
+            intTrack - 5,
             intTail,
-            16
+            10
           );
-          ctx.drawImage(headSprite, intPos - 18, intTrack - 18);
+          ctx.drawImage(headSprite, intPos - 10, intTrack - 10);
         } else if (s.direction === "down") {
           const tailSprite = sprites.tailsDown[colorIdx];
           ctx.drawImage(
             tailSprite,
             0,
             MAX_TAIL - intTail,
-            16,
+            10,
             intTail,
-            intTrack - 8,
+            intTrack - 5,
             intPos - intTail,
-            16,
+            10,
             intTail
           );
-          ctx.drawImage(headSprite, intTrack - 18, intPos - 18);
+          ctx.drawImage(headSprite, intTrack - 10, intPos - 10);
         } else {
           const tailSprite = sprites.tailsUp[colorIdx];
           ctx.drawImage(
             tailSprite,
             0,
             0,
-            16,
+            10,
             intTail,
-            intTrack - 8,
+            intTrack - 5,
             intPos,
-            16,
+            10,
             intTail
           );
-          ctx.drawImage(headSprite, intTrack - 18, intPos - 18);
+          ctx.drawImage(headSprite, intTrack - 10, intPos - 10);
         }
       }
 
