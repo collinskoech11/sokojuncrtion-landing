@@ -411,7 +411,7 @@ export default function Showcase() {
                 {/* Screenshot Frame */}
                 <div className="relative aspect-[16/10] w-full rounded-2xl overflow-hidden bg-gray-100">
                   <Image
-                    src="/assets/simple.png"
+                    src="/assets/ai_growth_demo.png"
                     alt="SokoJunction AI Insights and Reports"
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
